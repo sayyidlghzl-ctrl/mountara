@@ -1,0 +1,736 @@
+    :root {
+        --biru: #1f5fa8;
+        --mudah: #34c27a;
+        --sedang: #f2b632;
+        --sulit: #ef5b3f
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0
+    }
+
+    html,
+    body {
+        height: 100%
+    }
+
+    body {
+        font-family: 'Poppins', system-ui, sans-serif;
+        color: #fff;
+        background: #0c1520;
+        overflow: hidden
+    }
+
+    /* ===== Hero / background ===== */
+    .hero {
+        position: relative;
+        height: 100vh;
+        min-height: 620px;
+        overflow: hidden
+    }
+
+    .bg {
+        position: absolute;
+        inset: 0;
+        background-color: #243b55;
+        background-image: linear-gradient(135deg, #1d3854 0%, #496a78 48%, #c08a64 100%);
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.06);
+        animation: fade .7s ease, drift 18s ease-in-out infinite alternate
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(8, 14, 24, .65) 0%, rgba(8, 14, 24, .15) 55%, rgba(8, 14, 24, .35) 100%),
+            linear-gradient(0deg, rgba(8, 14, 24, .55), transparent 40%)
+    }
+
+    @keyframes drift {
+        0% {
+            transform: scale(1.06) translate3d(0, 0, 0)
+        }
+
+        100% {
+            transform: scale(1.12) translate3d(0, -10px, 0)
+        }
+    }
+
+    @keyframes fade {
+        from {
+            opacity: 0;
+            transform: scale(1.04)
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1)
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(24px)
+        }
+
+        to {
+            opacity: 1;
+            transform: none
+        }
+    }
+
+    .layer {
+        position: absolute;
+        inset: 0;
+        z-index: 2
+    }
+
+    /* ===== Navbar ===== */
+    nav {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 26px 40px
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 1.5rem;
+        animation: floatLogo 4s ease-in-out infinite
+    }
+
+    .logo svg {
+        width: 34px;
+        height: 34px
+    }
+
+    @keyframes floatLogo {
+        0%,
+        100% {
+            transform: translateY(0)
+        }
+
+        50% {
+            transform: translateY(-4px)
+        }
+    }
+
+    .menu {
+        display: flex;
+        gap: 44px;
+        font-size: .78rem;
+        font-weight: 500
+    }
+
+    .menu a {
+        color: #fff;
+        text-decoration: none;
+        opacity: .9
+    }
+
+    .menu a:hover {
+        opacity: 1;
+        text-decoration: underline;
+        text-underline-offset: 6px
+    }
+
+    .kanan {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: .8rem;
+        font-weight: 600
+    }
+
+    .cari-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px
+    }
+
+    #cari {
+        width: 0;
+        opacity: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .95);
+        color: #222;
+        font: inherit;
+        font-size: .8rem;
+        transition: .3s
+    }
+
+    #cari.buka {
+        width: 190px;
+        opacity: 1;
+        padding: 9px 14px
+    }
+
+    .ikon {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 0;
+        background: #fff;
+        color: #222;
+        cursor: pointer;
+        display: grid;
+        place-items: center
+    }
+
+    /* ===== Filter kesulitan ===== */
+    .filter {
+        position: absolute;
+        top: 92px;
+        left: 40px;
+        z-index: 5;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap
+    }
+
+    .pil {
+        border: 1px solid rgba(255, 255, 255, .5);
+        background: rgba(255, 255, 255, .12);
+        backdrop-filter: blur(6px);
+        color: #fff;
+        border-radius: 999px;
+        padding: 6px 14px;
+        font: inherit;
+        font-size: .72rem;
+        cursor: pointer;
+        transition: transform .25s ease, background .25s ease, box-shadow .25s ease
+    }
+
+    .pil:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .18)
+    }
+
+    .pil.aktif {
+        background: #fff;
+        color: #12304f;
+        border-color: #fff;
+        font-weight: 600;
+        box-shadow: 0 10px 25px rgba(255, 255, 255, .28)
+    }
+
+    /* ===== Garis timeline kiri ===== */
+    .timeline {
+        position: absolute;
+        left: 30px;
+        top: 120px;
+        bottom: 90px;
+        width: 22px;
+        z-index: 4;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center
+    }
+
+    .timeline::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        background: rgba(255, 255, 255, .45)
+    }
+
+    .tl {
+        position: relative;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #aab3bd;
+        cursor: pointer;
+        border: 0
+    }
+
+    .tl.aktif {
+        width: 22px;
+        height: 22px;
+        background: rgba(255, 255, 255, .35);
+        backdrop-filter: blur(4px);
+        font-size: .7rem;
+        font-weight: 600;
+        display: grid;
+        place-items: center;
+        color: #fff
+    }
+
+    .nomor-v {
+        position: absolute;
+        left: 34px;
+        bottom: 34px;
+        z-index: 4;
+        font-size: .7rem;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        letter-spacing: .05em
+    }
+
+    /* ===== Teks utama ===== */
+    .teks {
+        position: absolute;
+        left: 90px;
+        bottom: 150px;
+        width: min(520px, 44vw);
+        z-index: 4;
+        animation: slideUp .6s ease
+    }
+
+    .teks h1 {
+        font-size: clamp(2.6rem, 7vw, 6rem);
+        font-weight: 800;
+        line-height: 1;
+        text-transform: uppercase;
+        letter-spacing: -.02em;
+        margin-bottom: 6px;
+        text-shadow: 0 6px 30px rgba(0, 0, 0, .35)
+    }
+
+    .garis {
+        width: 70px;
+        height: 3px;
+        background: #fff;
+        border-radius: 2px;
+        margin-bottom: 12px
+    }
+
+    .info-chip {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 12px
+    }
+
+    .info-chip span {
+        font-size: .72rem;
+        font-weight: 500;
+        background: rgba(255, 255, 255, .16);
+        backdrop-filter: blur(6px);
+        padding: 5px 12px;
+        border-radius: 999px
+    }
+
+    .teks p {
+        font-size: .78rem;
+        line-height: 1.7;
+        opacity: .92;
+        margin-bottom: 22px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden
+    }
+
+    .explore {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 46px;
+        background: var(--biru);
+        color: #fff;
+        border: 0;
+        border-radius: 6px;
+        padding: 15px 24px;
+        font: inherit;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .2s;
+        animation: pulseButton 2.4s ease-in-out infinite
+    }
+
+    .explore:hover {
+        background: #17497f;
+        transform: translateX(4px) scale(1.02)
+    }
+
+    @keyframes pulseButton {
+        0%,
+        100% {
+            box-shadow: 0 0 0 rgba(31, 95, 168, 0)
+        }
+
+        50% {
+            box-shadow: 0 0 20px rgba(31, 95, 168, .3)
+        }
+    }
+
+    /* ===== Kartu di kanan ===== */
+    .strip {
+        position: absolute;
+        right: 0;
+        top: 150px;
+        z-index: 4;
+        display: flex;
+        gap: 30px;
+        padding-left: 20px;
+        width: min(760px, 56vw);
+        overflow: hidden
+    }
+
+    .kartu {
+        flex: 0 0 190px;
+        cursor: pointer;
+        animation: slideUp .6s ease both;
+        transition: transform .25s ease, filter .25s ease
+    }
+
+    .kartu:nth-child(2) {
+        animation-delay: .08s
+    }
+
+    .kartu:nth-child(3) {
+        animation-delay: .16s
+    }
+
+    .kartu:hover {
+        transform: translateY(-8px)
+    }
+
+    .kartu h4 {
+        font-size: .85rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    .dots {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 10px
+    }
+
+    .dots i {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .4)
+    }
+
+    .dots i.on {
+        background: #fff
+    }
+
+    .foto {
+        height: 285px;
+        border-radius: 12px;
+        background: linear-gradient(145deg, #637f8b, #344d5c 55%, #1b2b3a);
+        position: relative;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, .35);
+        transition: transform .25s ease, filter .25s ease;
+    }
+
+    .placeholder-gambar {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: rgba(255, 255, 255, .72);
+        font-size: .72rem;
+        letter-spacing: .04em
+    }
+
+    .kartu:hover .foto {
+        transform: translateY(-6px) scale(1.02);
+        filter: brightness(1.12)
+    }
+
+    .kartu-meta {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 3px 8px;
+        padding: 10px 2px 0;
+        font-size: .68rem;
+        color: rgba(255, 255, 255, .72)
+    }
+
+    .kartu-meta strong {
+        color: #fff;
+        font-weight: 500;
+        text-align: right
+    }
+
+    .tag {
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        font-size: .68rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 999px;
+        color: #fff
+    }
+
+    .Mudah {
+        background: var(--mudah)
+    }
+
+    .Sedang {
+        background: var(--sedang);
+        color: #3a2a00
+    }
+
+    .Sulit {
+        background: var(--sulit)
+    }
+
+    .bookmark {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 0;
+        background: rgba(255, 255, 255, .92);
+        color: #444;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition: transform .2s ease, background .25s ease
+    }
+
+    .bookmark:hover {
+        transform: scale(1.08)
+    }
+
+    .bookmark.on {
+        background: var(--biru);
+        color: #fff;
+        box-shadow: 0 0 18px rgba(31, 95, 168, .4)
+    }
+
+    /* ===== Kontrol bawah ===== */
+    .panah {
+        position: absolute;
+        bottom: 34px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 5;
+        display: flex;
+        gap: 14px
+    }
+
+    .panah button {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, .55);
+        background: rgba(255, 255, 255, .14);
+        backdrop-filter: blur(6px);
+        color: #fff;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: transform .2s ease, background .25s ease, box-shadow .25s ease
+    }
+
+    .panah button:hover {
+        background: #fff;
+        color: #12304f;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, .22)
+    }
+
+    .hitung {
+        position: absolute;
+        right: 40px;
+        bottom: 38px;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: .72rem
+    }
+
+    .hitung .bar {
+        width: 70px;
+        height: 2px;
+        background: rgba(255, 255, 255, .35);
+        position: relative
+    }
+
+    .hitung .bar b {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background: #fff;
+        transition: width .4s
+    }
+
+    .kosong {
+        position: absolute;
+        inset: 0;
+        z-index: 6;
+        display: none;
+        place-items: center;
+        text-align: center;
+        background: rgba(8, 14, 24, .7);
+        font-size: 1rem
+    }
+
+    /* ===== Modal detail ===== */
+    .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 10, 18, .7);
+        backdrop-filter: blur(6px);
+        z-index: 20;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px
+    }
+
+    .overlay.buka {
+        display: flex
+    }
+
+    .modal {
+        background: #fff;
+        color: #1c2833;
+        border-radius: 18px;
+        max-width: 660px;
+        width: 100%;
+        max-height: 90vh;
+        overflow: auto;
+        position: relative;
+        animation: slideUp .35s ease
+    }
+
+    .modal .isi {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px
+    }
+
+    .modal h2 {
+        font-size: 1.6rem
+    }
+
+    .baris {
+        display: flex;
+        gap: 10px;
+        font-size: .9rem
+    }
+
+    .baris b {
+        min-width: 140px
+    }
+
+    .modal p {
+        font-size: .9rem;
+        line-height: 1.7;
+        color: #455560
+    }
+
+    .tutup {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 0;
+        background: #fff;
+        font-size: 1.3rem;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .2)
+    }
+
+    .kembali {
+        margin-top: 8px;
+        padding: 12px;
+        border: 0;
+        border-radius: 8px;
+        background: var(--biru);
+        color: #fff;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer
+    }
+
+    /* ===== Responsif ===== */
+    @media (max-width:900px) {
+        body {
+            overflow: auto
+        }
+
+        .hero {
+            height: auto;
+            min-height: 100vh;
+            padding-bottom: 110px
+        }
+
+        nav {
+            padding: 18px 20px;
+            position: relative
+        }
+
+        .menu {
+            display: none
+        }
+
+        .filter {
+            position: relative;
+            top: auto;
+            left: auto;
+            padding: 0 20px;
+            margin-top: 6px
+        }
+
+        .timeline,
+        .nomor-v {
+            display: none
+        }
+
+        .teks {
+            position: relative;
+            left: auto;
+            bottom: auto;
+            width: auto;
+            padding: 70px 20px 24px
+        }
+
+        .strip {
+            position: relative;
+            top: auto;
+            width: 100%;
+            padding: 0 20px 20px;
+            overflow-x: auto
+        }
+
+        .kartu {
+            flex-basis: 150px
+        }
+
+        .foto {
+            height: 210px
+        }
+
+        .hitung {
+            right: 20px
+        }
+    }

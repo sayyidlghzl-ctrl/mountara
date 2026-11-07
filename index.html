@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Puncak Jabar - Rekomendasi Gunung Jawa Barat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assests/style.css">
+</head>
+
+<body>
+    <section class="hero">
+        <div class="bg" id="bg"></div>
+
+        <div class="layer">
+            <nav>
+                <div class="logo">
+                    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                        <path d="M2 32 15 10l7 11 4-6 12 17z" fill="#fff" />
+                        <path d="M15 10l-3 5 3 3 3-3z" fill="#9ec8f0" />
+                    </svg>
+                    Puncak Jabar
+                </div>
+
+                <div class="menu">
+                    <a href="#">Berita</a>
+                    <a href="#">Destinasi</a>
+                    <a href="#">Panduan</a>
+                    <a href="#">Kontak</a>
+                </div>
+
+                <div class="kanan">
+                    <div class="cari-wrap">
+                        <input id="cari" type="search" placeholder="Cari gunung / lokasi..." aria-label="Cari gunung">
+                        <button class="ikon" id="btnCari" aria-label="Cari">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="7"></circle>
+                                <path d="m20 20-3.5-3.5"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <span>Halo, Pendaki!</span>
+                </div>
+            </nav>
+
+            <div class="filter" id="filter">
+                <button class="pil aktif" type="button">Semua</button>
+                <button class="pil" type="button">Pemula</button>
+                <button class="pil" type="button">Menengah</button>
+                <button class="pil" type="button">Mahir</button>
+            </div>
+
+            <div class="timeline" id="timeline"></div>
+            <div class="nomor-v" id="nomorV"></div>
+
+            <div class="teks" id="teks"></div>
+            <div class="strip" id="strip" aria-label="Contoh tampilan kartu gunung">
+                <article class="kartu">
+                    <h4>Nama gunung</h4>
+                    <div class="dots" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </div>
+                    <div class="foto">
+                        <span class="placeholder-gambar">Foto dari database</span>
+                        <button class="bookmark" type="button" aria-label="Simpan gunung">
+                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
+                                <path d="M1 1h12v14l-6-4-6 4z" />
+                            </svg>
+                        </button>
+                        <span class="tag">Tingkat kesulitan</span>
+                    </div>
+                    <div class="kartu-meta">
+                        <span>Ketinggian</span>
+                        <strong>— mdpl</strong>
+                        <span>Lokasi</span>
+                        <strong>—</strong>
+                    </div>
+                </article>
+
+                <article class="kartu">
+                    <h4>Nama gunung</h4>
+                    <div class="dots" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </div>
+                    <div class="foto">
+                        <span class="placeholder-gambar">Foto dari database</span>
+                        <button class="bookmark" type="button" aria-label="Simpan gunung">
+                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
+                                <path d="M1 1h12v14l-6-4-6 4z" />
+                            </svg>
+                        </button>
+                        <span class="tag">Tingkat kesulitan</span>
+                    </div>
+                    <div class="kartu-meta">
+                        <span>Ketinggian</span>
+                        <strong>— mdpl</strong>
+                        <span>Lokasi</span>
+                        <strong>—</strong>
+                    </div>
+                </article>
+
+                <article class="kartu">
+                    <h4>Nama gunung</h4>
+                    <div class="dots" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </div>
+                    <div class="foto">
+                        <span class="placeholder-gambar">Foto dari database</span>
+                        <button class="bookmark" type="button" aria-label="Simpan gunung">
+                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
+                                <path d="M1 1h12v14l-6-4-6 4z" />
+                            </svg>
+                        </button>
+                        <span class="tag">Tingkat kesulitan</span>
+                    </div>
+                    <div class="kartu-meta">
+                        <span>Ketinggian</span>
+                        <strong>— mdpl</strong>
+                        <span>Lokasi</span>
+                        <strong>—</strong>
+                    </div>
+                </article>
+            </div>
+
+            <div class="panah">
+                <button type="button" aria-label="Sebelumnya">&#8592;</button>
+                <button type="button" aria-label="Berikutnya">&#8594;</button>
+            </div>
+
+            <div class="hitung">
+                <span id="h1"></span>
+                <div class="bar"><b id="bar"></b></div>
+                <span id="h2"></span>
+            </div>
+        </div>
+    </section>
+
+    <div class="overlay" id="overlay" aria-hidden="true">
+        <div class="modal" id="modal"></div>
+    </div>
+</body>
+
+</html>
