@@ -5,37 +5,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Puncak Jabar - Rekomendasi Gunung Jawa Barat</title>
+    <meta name="description"
+        content="Rekomendasi gunung di Jawa Barat lengkap dengan tingkat kesulitan, ketinggian, bookmark, dan peta lokasi.">
+
+    <!-- Font: Newsreader (judul) + Hanken Grotesk (isi). Menggantikan Poppins agar tampilan lebih berkarakter. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="assests/style.css">
+
+    <!-- Library baru: Leaflet (peta). Harus dimuat SEBELUM style.css agar override CSS kita berlaku. -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+    <link rel="stylesheet" href="./assests/style.css">
 </head>
 
 <body>
-    <section class="hero">
-        <div class="bg" id="bg"></div>
+    <!-- ===== Navbar: tersembunyi di hero, muncul setelah hero terlewati (diatur script.js) ===== -->
+    <nav class="navbar" id="navbar" aria-label="Navigasi utama">
+        <a class="logo" href="#beranda">
+            <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <path d="M2 32 15 10l7 11 4-6 12 17z" fill="currentColor" />
+                <path d="M15 10l-3 5 3 3 3-3z" fill="#d9b73f" />
+            </svg>
+            <span class="logo-teks">Wana Pasundan</span>
+        </a>
 
-        <div class="layer">
-            <nav>
-                <div class="logo">
-                    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
-                        <path d="M2 32 15 10l7 11 4-6 12 17z" fill="#fff" />
-                        <path d="M15 10l-3 5 3 3 3-3z" fill="#9ec8f0" />
-                    </svg>
-                    Puncak Jabar
+        <div class="menu">
+            <a href="#beranda" data-bagian="beranda">Beranda</a>
+            <a href="#destinasi" data-bagian="destinasi">Destinasi</a>
+            <a href="#peta" data-bagian="peta">Peta<span class="hanya-lebar"> Lokasi</span></a>
+            <a href="#destinasi" id="menuBookmark">Bookmark (<span id="jumlahBookmark">0</span>)</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- ===== BERANDA ===== -->
+        <section class="hero" id="beranda" aria-labelledby="judulBeranda">
+            <div class="bg" id="bg" aria-hidden="true"></div>
+
+            <div class="layer">
+                <div class="teks" id="teks">
+                    <div class="logo">
+                        <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                            <path d="M2 32 15 10l7 11 4-6 12 17z" fill="currentColor" />
+                            <path d="M15 10l-3 5 3 3 3-3z" fill="#d9b73f" />
+                        </svg>
+                        <span class="logo-teks">Wana Pasundan</span>
+                    </div>
+
+                    <h1 id="judulBeranda">Naik ke <span class="tanpa-putus">puncak-puncak</span> Tanah Pasundan</h1>
+                    <div class="garis"></div>
+                    <p>Rekomendasi <span id="jumlahGunung">40</span> gunung di Jawa Barat, dari bukit untuk pemanasan
+                        sampai Ciremai, atap provinsi ini. Cari, saring menurut tingkat kesulitan, simpan yang ingin
+                        Anda daki, lalu lihat letaknya di peta.</p>
+                    <a class="explore" href="#destinasi">Lihat destinasi gunung</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TIGA PUNCAK TERTINGGI (diisi script.js dari data gunung) ===== -->
+        <section class="bagian puncak" id="puncak-tertinggi" aria-labelledby="judulPuncak">
+            <div class="sorotan-grid">
+                <div class="sorotan-teks">
+                    <h2 id="judulPuncak">Tiga atap tertinggi Jawa Barat</h2>
+                    <p>Tiga gunung tertinggi dalam daftar ini menuntut persiapan matang. Periksa aturan pendakian dan
+                        kuota resmi sebelum berangkat.</p>
+                </div>
+                <div id="sorotan"></div>
+            </div>
+        </section>
+
+        <!-- ===== DESTINASI GUNUNG (katalog lama: filter, pencarian, carousel, penghitung) ===== -->
+        <section class="bagian destinasi" id="destinasi" aria-labelledby="judulDestinasi">
+            <div class="bagian-kepala">
+                <div class="pengantar">
+                    <h2 id="judulDestinasi">Pilih gunung sesuai kemampuan</h2>
+                    <p>Cari nama gunung atau kabupaten, saring menurut tingkat kesulitan, lalu simpan gunung yang ingin
+                        Anda daki lewat ikon bookmark di foto. Klik kartu untuk melihat detail.</p>
                 </div>
 
-                <div class="menu">
-                    <a href="#">Berita</a>
-                    <a href="#">Destinasi</a>
-                    <a href="#">Panduan</a>
-                    <a href="#">Kontak</a>
-                </div>
+                <div class="alat">
+                    <div class="filter" id="filter" role="group" aria-label="Filter tingkat kesulitan">
+                        <button class="pil aktif" type="button">Semua</button>
+                        <button class="pil" type="button">Pemula</button>
+                        <button class="pil" type="button">Menengah</button>
+                        <button class="pil" type="button">Mahir</button>
+                        <button class="pil" type="button">Bookmark</button>
+                    </div>
 
-                <div class="kanan">
                     <div class="cari-wrap">
                         <input id="cari" type="search" placeholder="Cari gunung / lokasi..." aria-label="Cari gunung">
-                        <button class="ikon" id="btnCari" aria-label="Cari">
+                        <button class="ikon" id="btnCari" type="button" aria-label="Cari">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
                                 <circle cx="11" cy="11" r="7"></circle>
@@ -43,960 +106,69 @@
                             </svg>
                         </button>
                     </div>
-                    <span>Halo, Pendaki!</span>
                 </div>
-            </nav>
-
-            <div class="filter" id="filter">
-                <button class="pil aktif" type="button">Semua</button>
-                <button class="pil" type="button">Pemula</button>
-                <button class="pil" type="button">Menengah</button>
-                <button class="pil" type="button">Mahir</button>
             </div>
 
-            <div class="timeline" id="timeline"></div>
-            <div class="nomor-v" id="nomorV"></div>
+            <!-- Kartu dirender oleh script.js dari data 40 gunung -->
+            <div class="strip" id="strip" aria-label="Daftar gunung"></div>
 
-            <div class="teks" id="teks"></div>
-            <div class="strip" id="strip" aria-label="Contoh tampilan kartu gunung">
-                <!-- Card 1 -->
-                <article class="kartu">
-                    <h4>Gunung Ciremai</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Ciremai</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Mahir</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>3.078 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Kuningan & Majalengka</strong>
-                    </div>
-                </article>
+            <div class="kontrol">
+                <div class="panah">
+                    <button type="button" aria-label="Sebelumnya">&#8592;</button>
+                    <button type="button" aria-label="Berikutnya">&#8594;</button>
+                </div>
 
-                <!-- Card 2 -->
-                <article class="kartu">
-                    <h4>Gunung Gede</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Gede</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.958 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Cianjur, Sukabumi, Bogor</strong>
-                    </div>
-                </article>
-
-                <!-- Card 3 -->
-                <article class="kartu">
-                    <h4>Gunung Pangrango</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Pangrango</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Mahir</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>3.019 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Cianjur, Sukabumi, Bogor</strong>
-                    </div>
-                </article>
-
-                <!-- Card 4 -->
-                <article class="kartu">
-                    <h4>Gunung Papandayan</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Papandayan</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.665 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Garut</strong>
-                    </div>
-                </article>
-
-                <!-- Card 5 -->
-                <article class="kartu">
-                    <h4>Gunung Cikuray</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Cikuray</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Mahir</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.821 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Garut</strong>
-                    </div>
-                </article>
-
-                <!-- Card 6 -->
-                <article class="kartu">
-                    <h4>Gunung Guntur</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Guntur</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.249 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Garut</strong>
-                    </div>
-                </article>
-
-                <!-- Card 7 -->
-                <article class="kartu">
-                    <h4>Gunung Salak</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Salak</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Mahir</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.211 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Bogor & Sukabumi</strong>
-                    </div>
-                </article>
-
-                <!-- Card 8 -->
-                <article class="kartu">
-                    <h4>Gunung Manglayang</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Manglayang</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.818 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Bandung & Sumedang</strong>
-                    </div>
-                </article>
-
-                <!-- Card 9 -->
-                <article class="kartu">
-                    <h4>Gunung Tangkuban Parahu</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Tangkuban Parahu</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.084 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Subang & Bandung Barat</strong>
-                    </div>
-                </article>
-
-                <!-- Card 10 -->
-                <article class="kartu">
-                    <h4>Gunung Burangrang</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Burangrang</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.050 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Bandung Barat & Purwakarta</strong>
-                    </div>
-                </article>
-
-                <!-- Card 11 -->
-                <article class="kartu">
-                    <h4>Gunung Tampomas</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Tampomas</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.684 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Sumedang</strong>
-                    </div>
-                </article>
-
-                <!-- Card 12 -->
-                <article class="kartu">
-                    <h4>Gunung Rakutak</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Rakutak</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.921 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Kabupaten Bandung</strong>
-                    </div>
-                </article>
-
-                <!-- Card 13 -->
-                <article class="kartu">
-                    <h4>Gunung Wayang</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Wayang</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.182 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Pangalengan, Bandung</strong>
-                    </div>
-                </article>
-
-                <!-- Card 14 -->
-                <article class="kartu">
-                    <h4>Gunung Malabar</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Malabar</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.343 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Kabupaten Bandung</strong>
-                    </div>
-                </article>
-
-                <!-- Card 15 -->
-                <article class="kartu">
-                    <h4>Gunung Patuha</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Patuha</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.434 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Ciwidey, Bandung</strong>
-                    </div>
-                </article>
-
-                <!-- Card 16 -->
-                <article class="kartu">
-                    <h4>Gunung Kencana</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Kencana</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.803 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Bogor</strong>
-                    </div>
-                </article>
-
-                <!-- Card 17 -->
-                <article class="kartu">
-                    <h4>Gunung Munara</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Munara</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>360 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Rumpin, Bogor</strong>
-                    </div>
-                </article>
-
-                <!-- Card 18 -->
-                <article class="kartu">
-                    <h4>Gunung Batu Lembang</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Batu Lembang</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.228 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Lembang, Bandung Barat</strong>
-                    </div>
-                </article>
-
-                <!-- Card 19 -->
-                <article class="kartu">
-                    <h4>Gunung Lembu</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Lembu</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>792 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Purwakarta</strong>
-                    </div>
-                </article>
-
-                <!-- Card 20 -->
-                <article class="kartu">
-                    <h4>Gunung Parang</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Parang</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Mahir</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>963 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Purwakarta</strong>
-                    </div>
-                </article>
-
-                <!-- Card 21 -->
-                <article class="kartu">
-                    <h4>Gunung Bongkok</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Bongkok</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>975 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Purwakarta</strong>
-                    </div>
-                </article>
-
-                <!-- Card 22 -->
-                <article class="kartu">
-                    <h4>Gunung Galunggung</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Galunggung</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.168 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Tasikmalaya</strong>
-                    </div>
-                </article>
-
-                <!-- Card 23 -->
-                <article class="kartu">
-                    <h4>Gunung Karang</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Karang</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.778 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Majalengka</strong>
-                    </div>
-                </article>
-
-                <!-- Card 24 -->
-                <article class="kartu">
-                    <h4>Gunung Puncak Manik</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Puncak Manik</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.211 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Salak 1, Sukabumi</strong>
-                    </div>
-                </article>
-
-                <!-- Card 25 -->
-                <article class="kartu">
-                    <h4>Gunung Palasari</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Palasari</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.852 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Sumedang</strong>
-                    </div>
-                </article>
-
-                <!-- Card 26 -->
-                <article class="kartu">
-                    <h4>Gunung Artapela</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Artapela</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.194 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Pangalengan, Bandung</strong>
-                    </div>
-                </article>
-
-                <!-- Card 27 -->
-                <article class="kartu">
-                    <h4>Gunung Sanggabuana</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Sanggabuana</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.291 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Karawang</strong>
-                    </div>
-                </article>
-
-                <!-- Card 28 -->
-                <article class="kartu">
-                    <h4>Gunung Kancana Sukabumi</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Kancana Sukabumi</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.200 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Sukabumi</strong>
-                    </div>
-                </article>
-
-                <!-- Card 29 -->
-                <article class="kartu">
-                    <h4>Gunung Subang</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Subang</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.204 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Cianjur & Kuningan</strong>
-                    </div>
-                </article>
-
-                <!-- Card 30 -->
-                <article class="kartu">
-                    <h4>Gunung Kendang</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Kendang</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Mahir</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>2.608 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Bandung & Garut</strong>
-                    </div>
-                </article>
-
-                <!-- Card 31 -->
-                <article class="kartu">
-                    <h4>Gunung Sadakora</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Sadakora</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.090 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Purwakarta</strong>
-                    </div>
-                </article>
-
-                <!-- Card 32 -->
-                <article class="kartu">
-                    <h4>Gunung Tilu Purwakarta</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Tilu Purwakarta</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.076 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Purwakarta</strong>
-                    </div>
-                </article>
-
-                <!-- Card 33 -->
-                <article class="kartu">
-                    <h4>Gunung Sawal</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Sawal</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.764 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Ciamis</strong>
-                    </div>
-                </article>
-
-                <!-- Card 34 -->
-                <article class="kartu">
-                    <h4>Gunung Hejo</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Hejo</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>650 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Purwakarta</strong>
-                    </div>
-                </article>
-
-                <!-- Card 35 -->
-                <article class="kartu">
-                    <h4>Gunung Kancana Bogor</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Kancana Bogor</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.802 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Cisarua, Bogor</strong>
-                    </div>
-                </article>
-
-                <!-- Card 36 -->
-                <article class="kartu">
-                    <h4>Gunung Sunda</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Sunda</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>700 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Sukabumi</strong>
-                    </div>
-                </article>
-
-                <!-- Card 37 -->
-                <article class="kartu">
-                    <h4>Gunung Karacak</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Karacak</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.838 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Garut</strong>
-                    </div>
-                </article>
-
-                <!-- Card 38 -->
-                <article class="kartu">
-                    <h4>Gunung Srimahi</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Srimahi</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Pemula</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.250 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Ciwidey, Bandung</strong>
-                    </div>
-                </article>
-
-                <!-- Card 39 -->
-                <article class="kartu">
-                    <h4>Gunung Sangar</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Sangar</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Menengah</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.835 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Arjasari, Bandung</strong>
-                    </div>
-                </article>
-
-                <!-- Card 40 -->
-                <article class="kartu">
-                    <h4>Gunung Halimun</h4>
-                    <div class="dots" aria-hidden="true">
-                        <i></i><i></i><i></i>
-                    </div>
-                    <div class="foto">
-                        <span class="placeholder-gambar">Foto Gunung Halimun</span>
-                        <button class="bookmark" type="button" aria-label="Simpan gunung">
-                            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">
-                                <path d="M1 1h12v14l-6-4-6 4z" />
-                            </svg>
-                        </button>
-                        <span class="tag">Mahir</span>
-                    </div>
-                    <div class="kartu-meta">
-                        <span>Ketinggian</span>
-                        <strong>1.929 mdpl</strong>
-                        <span>Lokasi</span>
-                        <strong>Sukabumi & Bogor</strong>
-                    </div>
-                </article>
+                <div class="hitung">
+                    <span id="h1"></span>
+                    <div class="bar"><b id="bar"></b></div>
+                    <span id="h2"></span>
+                </div>
             </div>
+        </section>
 
-            <div class="panah">
-                <button type="button" aria-label="Sebelumnya">&#8592;</button>
-                <button type="button" aria-label="Berikutnya">&#8594;</button>
+        <!-- ===== PETA LOKASI GUNUNG ===== -->
+        <section class="bagian peta" id="peta" aria-labelledby="judulPeta">
+            <div class="peta-grid">
+                <div class="peta-teks">
+                    <h2 id="judulPeta">Peta lokasi gunung</h2>
+                    <p>Warna penanda mengikuti tingkat kesulitan. Klik penanda untuk ringkasan, lalu buka detail
+                        lengkapnya. Gunung yang sudah Anda bookmark diberi lingkaran tambahan.</p>
+
+                    <ul class="legenda" aria-label="Keterangan warna penanda">
+                        <li><i class="Pemula"></i>Pemula</li>
+                        <li><i class="Menengah"></i>Menengah</li>
+                        <li><i class="Mahir"></i>Mahir</li>
+                    </ul>
+
+                    <p class="peta-catatan" id="petaCatatan"></p>
+
+                    <details class="peta-daftar">
+                        <summary>Gunung tanpa koordinat terverifikasi (<span id="jumlahTanpaKoordinat">0</span>)
+                        </summary>
+                        <ul id="daftarTanpaKoordinat"></ul>
+                    </details>
+                </div>
+
+                <div class="peta-kanvas" id="petaGunung" role="region"
+                    aria-label="Peta interaktif lokasi gunung Jawa Barat"></div>
             </div>
+        </section>
+    </main>
 
-            <div class="hitung">
-                <span id="h1"></span>
-                <div class="bar"><b id="bar"></b></div>
-                <span id="h2"></span>
-            </div>
-        </div>
-    </section>
+    <footer class="kaki">
+        <strong>Puncak Jabar</strong>
+        <p>Rekomendasi Gunung Jawa Barat. Periksa kondisi jalur dan aturan pendakian resmi sebelum berangkat.</p>
+        <p>Koordinat penanda bersumber dari Wikipedia, Gunung Bagging, dan daftar gunung api BIRA-IASB. Peta &copy;
+            OpenStreetMap contributors.</p>
+    </footer>
 
+    <!-- ===== Modal detail gunung ===== -->
     <div class="overlay" id="overlay" aria-hidden="true">
-        <div class="modal" id="modal"></div>
+        <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="judulModal"></div>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="./assests/script.js"></script>
 </body>
 
