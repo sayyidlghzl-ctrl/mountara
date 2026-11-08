@@ -1,6 +1,6 @@
 // Data 40 Gunung Jawa Barat
 const dataGunung = [
-    { id: 1, nama: "Gunung Ciremai", kesulitan: "Mahir", mdpl: 3078, lokasi: "Kuningan & Majalengka", foto: "https://images.unsplash.com/photo-1589556264800-08ae9e129a8c?w=600&auto=format&fit=crop" },
+    { id: 1, nama: "Gunung Papandayan", kesulitan: " Mudah", mdpl:  2.665, lokasi: "Kabupaten Garut, Jawa Barat.", foto: "https://images.unsplash.com/photo-1589556264800-08ae9e129a8c?w=600&auto=format&fit=crop" },
     { id: 2, nama: "Gunung Gede", kesulitan: "Menengah", mdpl: 2958, lokasi: "Cianjur, Sukabumi, Bogor", foto: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop" },
     { id: 3, nama: "Gunung Pangrango", kesulitan: "Mahir", mdpl: 3019, lokasi: "Cianjur, Sukabumi, Bogor", foto: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&auto=format&fit=crop" },
     { id: 4, nama: "Gunung Papandayan", kesulitan: "Pemula", mdpl: 2665, lokasi: "Garut", foto: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&auto=format&fit=crop" },
