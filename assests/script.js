@@ -613,3 +613,182 @@ document.addEventListener("DOMContentLoaded", () => {
     inisialisasiNavbar();
     perbaruiBookmarkUI();
 });
+
+// =====================================================================
+// TAMBAHAN: Perkiraan cuaca di detail gunung (kode awal di atas tidak diubah)
+// Sumber data: Open-Meteo (gratis, tanpa API key) -> https://open-meteo.com
+// Cara kerja: tiap kali modal detail dibuka, bagian "Cuaca saat ini" disisipkan
+// otomatis sebelum tombol aksi, lalu datanya diambil dari internet.
+// =====================================================================
+
+// Titik perkiraan untuk gunung yang belum punya koordinat terverifikasi di koordinatGunung.
+// Hanya dipakai untuk cuaca (TIDAK memunculkan marker di peta). Akurasinya kira-kira level wilayah,
+// cukup untuk prakiraan cuaca karena data cuaca sendiri berresolusi beberapa kilometer.
+const koordinatCuacaPerkiraan = {
+    8: { lat: -6.90, lng: 107.73 },   // Manglayang
+    10: { lat: -6.76, lng: 107.58 },  // Burangrang
+    11: { lat: -6.77, lng: 107.95 },  // Tampomas
+    12: { lat: -7.17, lng: 107.63 },  // Rakutak
+    13: { lat: -7.21, lng: 107.62 },  // Wayang
+    14: { lat: -7.13, lng: 107.65 },  // Malabar
+    16: { lat: -6.73, lng: 106.95 },  // Kencana
+    19: { lat: -6.58, lng: 107.40 },  // Lembu
+    20: { lat: -6.58, lng: 107.25 },  // Parang
+    21: { lat: -6.62, lng: 107.28 },  // Bongkok
+    23: { lat: -6.92, lng: 108.25 },  // Karang
+    24: { lat: -6.73, lng: 106.74 },  // Puncak Manik
+    25: { lat: -6.85, lng: 107.90 },  // Palasari
+    26: { lat: -7.19, lng: 107.59 },  // Artapela
+    27: { lat: -6.60, lng: 107.20 },  // Sanggabuana
+    28: { lat: -6.92, lng: 106.93 },  // Kancana Sukabumi
+    29: { lat: -6.95, lng: 108.45 },  // Subang
+    30: { lat: -7.20, lng: 107.74 },  // Kendang
+    31: { lat: -6.62, lng: 107.40 },  // Sadakora
+    32: { lat: -6.62, lng: 107.42 },  // Tilu Purwakarta
+    33: { lat: -7.20, lng: 108.27 },  // Sawal
+    34: { lat: -6.58, lng: 107.33 },  // Hejo
+    35: { lat: -6.73, lng: 106.95 },  // Kancana Bogor
+    36: { lat: -6.95, lng: 106.85 },  // Sunda
+    37: { lat: -7.25, lng: 107.80 },  // Karacak
+    38: { lat: -7.10, lng: 107.40 },  // Srimahi
+    39: { lat: -7.10, lng: 107.65 },  // Sangar
+    40: { lat: -6.73, lng: 106.51 }   // Halimun
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    const modalEl = document.getElementById("modal");
+    if (!modalEl || typeof MutationObserver === "undefined") return;
+
+    const CACHE_MENIT = 10;
+    const cacheCuaca = new Map(); // id gunung -> { waktu, data }
+
+    // Kode cuaca WMO -> teks Indonesia
+    function teksCuaca(kode) {
+        if (kode === 0) return "Cerah";
+        if (kode === 1) return "Cerah berawan";
+        if (kode === 2) return "Berawan sebagian";
+        if (kode === 3) return "Mendung";
+        if (kode === 45 || kode === 48) return "Berkabut";
+        if (kode >= 51 && kode <= 57) return "Gerimis";
+        if (kode === 61 || kode === 80) return "Hujan ringan";
+        if (kode === 63 || kode === 81) return "Hujan sedang";
+        if (kode === 65 || kode === 82) return "Hujan lebat";
+        if (kode === 66 || kode === 67) return "Hujan beku";
+        if (kode >= 71 && kode <= 77) return "Salju";
+        if (kode === 85 || kode === 86) return "Salju";
+        if (kode === 95) return "Badai petir";
+        if (kode === 96 || kode === 99) return "Badai petir disertai es";
+        return "Tidak diketahui";
+    }
+
+    function titikCuaca(gunung) {
+        const asli = typeof koordinatGunung !== "undefined" ? koordinatGunung[gunung.id] : null;
+        if (asli) return { lat: asli.lat, lng: asli.lng, perkiraan: false };
+        const p = koordinatCuacaPerkiraan[gunung.id];
+        return p ? { lat: p.lat, lng: p.lng, perkiraan: true } : null;
+    }
+
+    async function ambilCuaca(gunung, titik) {
+        const cache = cacheCuaca.get(gunung.id);
+        if (cache && Date.now() - cache.waktu < CACHE_MENIT * 60000) return cache.data;
+
+        const url = "https://api.open-meteo.com/v1/forecast"
+            + `?latitude=${titik.lat}&longitude=${titik.lng}&elevation=${gunung.mdpl}`
+            + "&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code"
+            + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max"
+            + "&timezone=Asia%2FJakarta&forecast_days=3";
+
+        const pengendali = new AbortController();
+        const batas = setTimeout(() => pengendali.abort(), 8000);
+        try {
+            const res = await fetch(url, { signal: pengendali.signal });
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const data = await res.json();
+            cacheCuaca.set(gunung.id, { waktu: Date.now(), data });
+            return data;
+        } finally {
+            clearTimeout(batas);
+        }
+    }
+
+    function namaHari(tanggal, indeks) {
+        if (indeks === 0) return "Hari ini";
+        if (indeks === 1) return "Besok";
+        const d = new Date(tanggal + "T00:00:00");
+        return d.toLocaleDateString("id-ID", { weekday: "long" });
+    }
+
+    function saranPendakian(data) {
+        const kode = data.current.weather_code;
+        const hujan = data.daily.precipitation_probability_max[0];
+        const angin = data.daily.wind_speed_10m_max[0];
+        if (kode >= 95) return "Ada potensi badai petir. Sebaiknya tunda pendakian dan hindari area terbuka.";
+        if (kode === 65 || kode === 82 || hujan >= 80) return "Kemungkinan hujan lebat hari ini. Jalur bisa licin, pertimbangkan menunda pendakian.";
+        if (angin >= 40) return "Angin cukup kencang di ketinggian. Bawa jaket windproof dan waspada di area terbuka.";
+        if (hujan >= 50) return "Peluang hujan cukup tinggi. Siapkan jas hujan dan pelindung tas.";
+        return "Cuaca relatif bersahabat. Tetap cek kondisi terbaru dan aturan pendakian resmi sebelum berangkat.";
+    }
+
+    function tampilkanCuaca(wadah, gunung, titik, data) {
+        const c = data.current;
+        const d = data.daily;
+        const baris = d.time.map((tgl, i) => `
+            <li>
+                <span class="cuaca-hari">${namaHari(tgl, i)}</span>
+                <span class="cuaca-ket">${teksCuaca(d.weather_code[i])}</span>
+                <span class="cuaca-suhu">${Math.round(d.temperature_2m_min[i])}&ndash;${Math.round(d.temperature_2m_max[i])}&deg;C</span>
+                <span class="cuaca-hujan">Hujan ${d.precipitation_probability_max[i]}%</span>
+            </li>`).join("");
+
+        const catatanTitik = titik.perkiraan
+            ? " Titik prakiraan memakai koordinat perkiraan wilayah gunung."
+            : "";
+
+        wadah.innerHTML = `
+            <h3>Cuaca saat ini</h3>
+            <div class="cuaca-utama">
+                <span class="cuaca-suhu-besar">${Math.round(c.temperature_2m)}&deg;C</span>
+                <span class="cuaca-kondisi">${teksCuaca(c.weather_code)}</span>
+            </div>
+            <div class="cuaca-detail">
+                <span>Kelembapan ${Math.round(c.relative_humidity_2m)}%</span>
+                <span>Angin ${Math.round(c.wind_speed_10m)} km/jam</span>
+            </div>
+            <ul class="cuaca-harian">${baris}</ul>
+            <p class="cuaca-saran">${saranPendakian(data)}</p>
+            <p class="cuaca-sumber">Suhu disesuaikan dengan ketinggian ${gunung.mdpl.toLocaleString("id-ID")} mdpl. Sumber: Open-Meteo.${catatanTitik}
+            Cuaca di jalur dan puncak bisa berubah cepat, jadi anggap ini perkiraan.</p>`;
+    }
+
+    function sisipkanCuaca() {
+        const judul = modalEl.querySelector("#judulModal");
+        const aksi = modalEl.querySelector(".modal-aksi");
+        if (!judul || !aksi || modalEl.querySelector(".cuaca")) return;
+
+        const gunung = dataGunung.find(g => g.nama === judul.textContent.trim());
+        if (!gunung) return;
+
+        const wadah = document.createElement("section");
+        wadah.className = "cuaca";
+        wadah.setAttribute("aria-live", "polite");
+        wadah.setAttribute("aria-label", "Perkiraan cuaca " + gunung.nama);
+        aksi.before(wadah);
+
+        const titik = titikCuaca(gunung);
+        if (!titik) {
+            wadah.innerHTML = `<h3>Cuaca saat ini</h3><p class="cuaca-status">Koordinat gunung ini belum tersedia, jadi cuaca belum bisa ditampilkan.</p>`;
+            return;
+        }
+
+        wadah.innerHTML = `<h3>Cuaca saat ini</h3><p class="cuaca-status">Memuat cuaca...</p>`;
+        ambilCuaca(gunung, titik)
+            .then(data => { if (wadah.isConnected) tampilkanCuaca(wadah, gunung, titik, data); })
+            .catch(() => {
+                if (!wadah.isConnected) return;
+                wadah.innerHTML = `<h3>Cuaca saat ini</h3><p class="cuaca-status">Cuaca belum bisa dimuat. Periksa koneksi internet lalu buka detail gunung ini lagi.</p>`;
+            });
+    }
+
+    // Modal dibangun ulang (innerHTML) setiap kali detail gunung dibuka -> sisipkan cuaca.
+    new MutationObserver(sisipkanCuaca).observe(modalEl, { childList: true });
+});
