@@ -1,19 +1,20 @@
 /* =========================================================
    Puncak Jabar - style.css
    Kelas lama dipertahankan (.hero .bg .layer .teks .garis .explore
-   .filter .pil .cari-wrap .ikon .strip .kartu .foto .tag .bookmark
-   .kartu-meta .panah .hitung .overlay .modal ...). Nilainya disesuaikan
-   dengan layout halaman bergulir; kelas baru ditandai di tiap bagian.
+   .filter .pil .cari-wrap .ikon .strip .kartu .foto .tag .kartu-meta
+   .panah .hitung .overlay .modal ...). Tombol bookmark kini .favorit.
+   Arah desain: peta topografi + pagi berkabut di hutan hujan. Sudut
+   tegas (2px) sebagai ciri, belerang kawah sebagai satu-satunya aksen.
    ========================================================= */
 
 :root {
-    /* variabel lama (dipertahankan; warna kesulitan diselaraskan dengan palet baru) */
+    /* variabel lama (dipertahankan; warna kesulitan diselaraskan dengan palet) */
     --biru: #1f5fa8;
     --mudah: #7fb685;
     --sedang: #d9b73f;
     --sulit: #b94a32;
 
-    /* palet baru: kabut pagi, hutan, belerang kawah */
+    /* palet: kabut pagi, hutan, belerang kawah */
     --kabut: #edf0ec;
     --kabut-tua: #dfe5df;
     --hutan: #13261f;
@@ -27,6 +28,10 @@
 
     --gutter: max(clamp(20px, 5vw, 64px), calc((100vw - 1200px) / 2));
     --tinggi-nav: 56px;
+    --lembut: cubic-bezier(.2, .7, .2, 1);
+
+    /* garis kontur peta (ilustrasi SVG, dipakai sebagai latar tipis) */
+    --kontur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600' fill='none' stroke='%23bfc9c1' stroke-width='1.2'%3E%3Cg transform='translate(300 300)'%3E%3Cpath id='b' vector-effect='non-scaling-stroke' d='M-210-40C-200-150-60-200 40-170C150-140 215-60 200 30C185 120 100 190-10 195C-120 200-220 110-210-40Z'/%3E%3Cuse href='%23b' transform='rotate(6) scale(.82)'/%3E%3Cuse href='%23b' transform='rotate(-4) scale(.64)'/%3E%3Cuse href='%23b' transform='rotate(10) scale(.48)'/%3E%3Cuse href='%23b' transform='rotate(-8) scale(.34)'/%3E%3Cuse href='%23b' transform='rotate(5) scale(.22)'/%3E%3Cuse href='%23b' transform='scale(.12)'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 * {
@@ -74,15 +79,16 @@ button {
 .hero :focus-visible,
 .destinasi :focus-visible,
 .navbar :focus-visible,
-.kaki :focus-visible {
+.kaki :focus-visible,
+.toast :focus-visible {
     outline-color: var(--kabut)
 }
 
-/* ===== Animasi (satu kali saat dimuat; tidak ada animasi berulang) ===== */
+/* ===== Animasi ===== */
 @keyframes fade {
     from {
         opacity: 0;
-        transform: scale(1.04)
+        transform: scale(1.06)
     }
 
     to {
@@ -103,6 +109,92 @@ button {
     }
 }
 
+@keyframes garis {
+    from {
+        transform: scaleX(0)
+    }
+}
+
+@keyframes denyut {
+    0% {
+        transform: scale(1)
+    }
+
+    40% {
+        transform: scale(1.35)
+    }
+
+    100% {
+        transform: scale(1)
+    }
+}
+
+@keyframes naik {
+    0% {
+        transform: translateY(0)
+    }
+
+    35% {
+        transform: translateY(-4px)
+    }
+
+    100% {
+        transform: translateY(0)
+    }
+}
+
+@keyframes isi {
+    from {
+        transform: scaleX(0)
+    }
+}
+
+/* Muncul saat digulir: hanya aktif bila JS berjalan (kelas .js dipasang di <head>) */
+.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .8s ease var(--d, 0ms), transform .9s var(--lembut) var(--d, 0ms)
+}
+
+.js [data-reveal="fade"] {
+    transform: none
+}
+
+.js [data-reveal].muncul {
+    opacity: 1;
+    transform: none
+}
+
+/* Label bagian bernomor, seperti legenda di peta */
+.label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    font-size: .76rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--batu-pudar)
+}
+
+.label b {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums
+}
+
+.label::after {
+    content: "";
+    width: 36px;
+    height: 1px;
+    background: currentColor;
+    opacity: .6
+}
+
+.destinasi .label {
+    color: var(--belerang)
+}
+
 /* ===== Hero / Beranda ===== */
 .hero {
     /* Ganti foto hero di sini (atau arahkan ke file sendiri, mis. url("img/hero.jpg")) */
@@ -110,7 +202,7 @@ button {
     position: relative;
     height: 100vh;
     height: 100svh;
-    min-height: 560px;
+    min-height: 600px;
     overflow: hidden;
     background: var(--hutan);
     color: #fff
@@ -118,12 +210,14 @@ button {
 
 .bg {
     position: absolute;
-    inset: 0;
+    inset: -14% 0;
     background-color: var(--hutan-tengah);
     background-image: var(--foto-hero);
     background-size: cover;
     background-position: center 40%;
-    animation: fade 1s ease both
+    /* properti translate terpisah dari transform, jadi tidak bentrok dengan animasi fade */
+    translate: 0 calc(var(--geser, 0) * 1px);
+    animation: fade 1.4s var(--lembut) both
 }
 
 .hero::after {
@@ -139,7 +233,9 @@ button {
     z-index: 2;
     display: flex;
     align-items: flex-end;
-    padding: 0 var(--gutter) clamp(48px, 11vh, 120px)
+    justify-content: space-between;
+    gap: 48px;
+    padding: 0 var(--gutter) clamp(88px, 17vh, 170px)
 }
 
 /* Logo (dipakai di hero dan navbar) */
@@ -164,10 +260,29 @@ button {
     margin-bottom: 34px
 }
 
-/* Teks utama hero */
+/* Teks utama hero: muncul berurutan */
 .teks {
-    width: min(40rem, 100%);
-    animation: slideUp .8s ease .15s both
+    width: min(40rem, 100%)
+}
+
+.teks>* {
+    animation: slideUp .9s var(--lembut) both
+}
+
+.teks>:nth-child(1) {
+    animation-delay: .2s
+}
+
+.teks>:nth-child(2) {
+    animation-delay: .32s
+}
+
+.teks>:nth-child(4) {
+    animation-delay: .56s
+}
+
+.teks>:nth-child(5) {
+    animation-delay: .68s
 }
 
 .teks h1 {
@@ -180,14 +295,17 @@ button {
 }
 
 .tanpa-putus {
-    white-space: nowrap
+    white-space: nowrap;
+    font-style: italic
 }
 
-.garis {
+.teks>.garis {
     width: 56px;
     height: 2px;
     background: var(--belerang);
-    margin-bottom: 22px
+    margin-bottom: 22px;
+    transform-origin: left;
+    animation: garis .9s var(--lembut) .5s both
 }
 
 .teks p {
@@ -202,24 +320,95 @@ button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 12px;
     background: var(--kabut);
     color: var(--hutan);
     border: 0;
     border-radius: 2px;
-    padding: 15px 28px;
+    padding: 15px 24px 15px 28px;
     font: inherit;
     font-size: .95rem;
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
-    transition: background .2s ease
+    transition: background .25s ease, transform .2s ease
+}
+
+.explore svg {
+    transition: transform .3s var(--lembut)
 }
 
 .explore:hover {
     background: var(--belerang)
 }
 
-/* ===== Navbar (kelas baru: tersembunyi di hero, muncul setelah hero terlewati) ===== */
+.explore:hover svg {
+    transform: translateY(3px)
+}
+
+.explore:active {
+    transform: translateY(1px)
+}
+
+/* Ringkasan angka di sisi kanan hero */
+.hero-data {
+    display: grid;
+    gap: 28px;
+    padding-left: 24px;
+    border-left: 1px solid rgba(237, 240, 236, .35);
+    min-width: 12rem;
+    animation: slideUp .9s var(--lembut) .95s both
+}
+
+.hero-data dt {
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(237, 240, 236, .7)
+}
+
+.hero-data dd {
+    font-family: var(--font-judul);
+    font-size: clamp(2.2rem, 3.6vw, 3.2rem);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums
+}
+
+.hero-data dd small {
+    font-family: var(--font-isi);
+    font-size: .85rem;
+    color: rgba(237, 240, 236, .7)
+}
+
+.hero-data dd.nama {
+    font-family: var(--font-isi);
+    font-size: .9rem;
+    color: var(--belerang)
+}
+
+/* Punggung bukit di dasar hero */
+.punggung {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    z-index: 1;
+    width: 100%;
+    height: clamp(56px, 8vw, 112px);
+    display: block;
+    pointer-events: none
+}
+
+.punggung .belakang {
+    fill: rgba(237, 240, 236, .38)
+}
+
+.punggung .depan {
+    fill: var(--kabut)
+}
+
+/* ===== Navbar: tersembunyi di hero, muncul setelah hero terlewati ===== */
 .navbar {
     position: fixed;
     top: 0;
@@ -237,13 +426,13 @@ button {
     border-bottom: 1px solid rgba(237, 240, 236, .12);
     transform: translateY(-100%);
     visibility: hidden;
-    transition: transform .35s ease, visibility 0s linear .35s
+    transition: transform .4s var(--lembut), visibility 0s linear .4s
 }
 
 .navbar.tampil {
     transform: none;
     visibility: visible;
-    transition: transform .35s ease
+    transition: transform .4s var(--lembut)
 }
 
 .navbar .logo {
@@ -263,28 +452,50 @@ button {
 }
 
 .menu a {
+    position: relative;
     color: #fff;
     text-decoration: none;
     opacity: .85;
     padding: 6px 0;
-    white-space: nowrap
+    white-space: nowrap;
+    transition: opacity .2s ease
 }
 
-.menu a:hover {
-    opacity: 1;
-    text-decoration: underline;
-    text-underline-offset: 8px
+.menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--belerang);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .35s var(--lembut)
 }
 
+.menu a:hover,
 .menu a.aktif {
-    opacity: 1;
-    text-decoration: underline;
-    text-decoration-color: var(--belerang);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 8px
+    opacity: 1
 }
 
-/* ===== Bagian halaman (kelas baru) ===== */
+.menu a:hover::after,
+.menu a.aktif::after {
+    transform: scaleX(1)
+}
+
+#jumlahFavorit {
+    display: inline-block;
+    min-width: .6em;
+    text-align: center;
+    font-variant-numeric: tabular-nums
+}
+
+#jumlahFavorit.naik {
+    animation: naik .4s var(--lembut)
+}
+
+/* ===== Bagian halaman ===== */
 .bagian {
     padding: clamp(80px, 12vw, 150px) var(--gutter)
 }
@@ -299,7 +510,11 @@ button {
 
 /* ===== Tiga puncak tertinggi ===== */
 .puncak {
-    background: var(--kabut)
+    background-color: var(--kabut);
+    background-image: var(--kontur);
+    background-repeat: no-repeat;
+    background-size: min(760px, 120vw);
+    background-position: -220px -160px
 }
 
 .sorotan-grid {
@@ -335,18 +550,39 @@ button {
 }
 
 .sorotan-foto {
+    position: relative;
     display: block;
     width: 100%;
+    overflow: hidden;
     background-color: var(--kabut-tua);
-    background-size: cover;
-    background-position: center;
-    border-radius: 4px;
-    margin-bottom: 14px;
-    transition: filter .25s ease
+    border-radius: 2px;
+    margin-bottom: 14px
 }
 
-.sorotan-item:hover .sorotan-foto {
+.sorotan-gambar {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 1s var(--lembut), filter .4s ease
+}
+
+.sorotan-item:hover .sorotan-gambar {
+    transform: scale(1.05);
     filter: brightness(1.06)
+}
+
+.sorotan-no {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 8px 12px 6px;
+    background: var(--kabut);
+    color: var(--hutan);
+    font-family: var(--font-judul);
+    font-size: 1.15rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums
 }
 
 .sorotan-nama {
@@ -354,7 +590,16 @@ button {
     font-family: var(--font-judul);
     font-size: 1.5rem;
     font-weight: 500;
-    line-height: 1.2
+    line-height: 1.2;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+    text-decoration-color: transparent;
+    transition: text-decoration-color .3s ease
+}
+
+.sorotan-item:hover .sorotan-nama {
+    text-decoration-color: var(--belerang)
 }
 
 .sorotan-meta {
@@ -394,10 +639,23 @@ button {
     aspect-ratio: 3 / 4
 }
 
-/* ===== Destinasi (katalog lama) ===== */
+/* ===== Destinasi (katalog) ===== */
 .destinasi {
+    position: relative;
     background: var(--hutan);
     color: var(--kabut)
+}
+
+/* Tepi atas bergerigi: puncak gelap menusuk ke bagian kabut di atasnya */
+.destinasi::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -1px;
+    height: clamp(28px, 4vw, 56px);
+    background: var(--kabut);
+    clip-path: polygon(0 0, 100% 0, 100% 34%, 95% 58%, 89% 30%, 82% 72%, 74% 46%, 66% 82%, 58% 52%, 49% 68%, 41% 28%, 32% 62%, 23% 40%, 14% 74%, 6% 46%, 0 64%)
 }
 
 .bagian-kepala {
@@ -433,19 +691,24 @@ button {
 }
 
 .pil {
-    border: 1px solid rgba(237, 240, 236, .4);
+    border: 1px solid rgba(237, 240, 236, .35);
     background: transparent;
     color: var(--kabut);
     border-radius: 25px;
-    padding: 8px 16px;
+    padding: 8px 14px;
     font: inherit;
     font-size: .85rem;
     cursor: pointer;
-    transition: background .2s ease, color .2s ease, border-color .2s ease
+    transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease
 }
 
 .pil:hover {
-    border-color: var(--kabut)
+    border-color: var(--kabut);
+    transform: translateY(-1px)
+}
+
+.pil:active {
+    transform: translateY(0)
 }
 
 .pil.aktif {
@@ -455,29 +718,40 @@ button {
     font-weight: 600
 }
 
-/* Pencarian (sekarang selalu terlihat) */
+.jml {
+    margin-left: 7px;
+    font-size: .72rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    opacity: .6
+}
+
+.jml:empty {
+    display: none
+}
+
+/* Pencarian: garis bawah saja, berubah kuning saat fokus */
 .cari-wrap {
     display: flex;
     align-items: center;
     width: min(100%, 320px);
-    border: 1px solid rgba(237, 240, 236, .4);
-    border-radius: 25px;
-    transition: border-color .2s ease
+    border-bottom: 1px solid rgba(237, 240, 236, .4);
+    transition: border-color .25s ease
 }
 
 .cari-wrap:focus-within {
-    border-color: var(--kabut)
+    border-color: var(--belerang)
 }
 
 #cari {
     flex: 1;
     min-width: 0;
-    padding: 10px 14px;
+    padding: 10px 4px;
     border: 0;
     background: transparent;
     color: var(--kabut);
     font: inherit;
-    font-size: .9rem
+    font-size: .92rem
 }
 
 #cari::placeholder {
@@ -496,7 +770,12 @@ button {
     color: var(--kabut);
     cursor: pointer;
     display: grid;
-    place-items: center
+    place-items: center;
+    transition: color .2s ease
+}
+
+.ikon:hover {
+    color: var(--belerang)
 }
 
 /* Carousel kartu */
@@ -507,12 +786,24 @@ button {
     scroll-snap-type: x proximity;
     scrollbar-width: none;
     margin: 0 calc(var(--gutter) * -1);
-    padding: 4px var(--gutter) 8px;
+    padding: 4px var(--gutter) 44px;
     scroll-padding-inline: var(--gutter)
 }
 
 .strip::-webkit-scrollbar {
     display: none
+}
+
+@media (hover: hover) {
+    .strip {
+        cursor: grab
+    }
+}
+
+.strip.digeser {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    user-select: none
 }
 
 .strip-kosong {
@@ -524,7 +815,25 @@ button {
 .kartu {
     flex: 0 0 clamp(210px, 22vw, 260px);
     scroll-snap-align: start;
-    cursor: pointer
+    cursor: pointer;
+    transition: transform .45s var(--lembut)
+}
+
+/* Irama naik-turun supaya deretan kartu tidak kaku */
+.kartu:nth-child(even) {
+    margin-top: 24px
+}
+
+@media (hover: hover) {
+    .kartu:hover {
+        transform: translateY(-6px)
+    }
+}
+
+/* Kartu masuk berurutan hanya saat filter diganti */
+.strip.masuk .kartu {
+    animation: slideUp .6s var(--lembut) backwards;
+    animation-delay: calc(var(--i, 0) * 55ms)
 }
 
 .kartu h3 {
@@ -535,18 +844,33 @@ button {
     margin-bottom: 12px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    transition: color .25s ease
+}
+
+.kartu:hover h3 {
+    color: var(--belerang)
 }
 
 .foto {
     height: clamp(280px, 30vw, 340px);
-    border-radius: 4px;
+    border-radius: 2px;
     background-color: #2d4a42;
+    position: relative;
+    overflow: hidden
+}
+
+.foto-gambar {
+    position: absolute;
+    inset: 0;
     background-size: cover;
     background-position: center;
-    position: relative;
-    overflow: hidden;
-    transition: filter .25s ease
+    transition: transform .9s var(--lembut), filter .3s ease
+}
+
+.kartu:hover .foto-gambar {
+    transform: scale(1.06);
+    filter: brightness(1.08)
 }
 
 .placeholder-gambar {
@@ -554,12 +878,37 @@ button {
     inset: 0;
     display: grid;
     place-items: center;
+    padding: 16px;
+    text-align: center;
     color: rgba(255, 255, 255, .72);
     font-size: .75rem
 }
 
-.kartu:hover .foto {
-    filter: brightness(1.08)
+.lihat {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    padding: 4px 8px;
+    font-size: .72rem;
+    font-weight: 600;
+    color: var(--kabut);
+    background: rgba(19, 38, 31, .78);
+    border-radius: 2px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .3s ease, transform .35s var(--lembut)
+}
+
+.kartu:hover .lihat,
+.kartu:focus-visible .lihat {
+    opacity: 1;
+    transform: none
+}
+
+@media (hover: none) {
+    .lihat {
+        display: none
+    }
 }
 
 .kartu-meta {
@@ -575,6 +924,27 @@ button {
     color: var(--kabut);
     font-weight: 500;
     text-align: right
+}
+
+/* Garis tinggi: ketinggian gunung dibanding gunung tertinggi dalam daftar */
+.tinggi {
+    display: block;
+    height: 2px;
+    margin-top: 12px;
+    background: rgba(237, 240, 236, .16)
+}
+
+.tinggi i {
+    display: block;
+    height: 100%;
+    background: rgba(237, 240, 236, .6);
+    transform-origin: left;
+    transition: background .3s ease
+}
+
+.kartu:hover .tinggi i {
+    background: var(--belerang);
+    animation: isi .8s var(--lembut)
 }
 
 .tag {
@@ -607,35 +977,48 @@ button {
     color: #fff
 }
 
-.bookmark {
+/* Tombol favorit (hati) */
+.favorit {
     position: absolute;
     top: 12px;
     right: 12px;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 2px;
     border: 0;
     background: rgba(237, 240, 236, .94);
     color: var(--hutan);
     cursor: pointer;
     display: grid;
     place-items: center;
-    transition: background .2s ease
+    transition: background .2s ease, transform .2s ease
 }
 
-.bookmark:hover {
-    background: #fff
+.favorit:hover {
+    background: #fff;
+    transform: scale(1.06)
 }
 
-.bookmark.aktif,
-.bookmark.on {
+.favorit:active {
+    transform: scale(.94)
+}
+
+.favorit.aktif {
     background: var(--belerang);
     color: var(--hutan)
 }
 
-.bookmark.aktif svg,
-.bookmark.on svg {
+.favorit svg {
+    transition: fill .2s ease
+}
+
+.favorit.aktif svg,
+.modal-fav.aktif svg {
     fill: currentColor
+}
+
+.favorit.pop svg {
+    animation: denyut .45s var(--lembut)
 }
 
 /* Kontrol bawah carousel */
@@ -644,7 +1027,7 @@ button {
     justify-content: space-between;
     align-items: center;
     gap: 24px;
-    margin-top: 40px
+    margin-top: 4px
 }
 
 .panah {
@@ -655,18 +1038,27 @@ button {
 .panah button {
     width: 44px;
     height: 44px;
-    border-radius: 50%;
+    border-radius: 2px;
     border: 1px solid rgba(237, 240, 236, .45);
     background: transparent;
     color: var(--kabut);
     cursor: pointer;
     font-size: 1.05rem;
-    transition: background .2s ease, color .2s ease
+    transition: background .2s ease, color .2s ease, opacity .2s ease, transform .2s ease
 }
 
-.panah button:hover {
+.panah button:not(:disabled):hover {
     background: var(--kabut);
     color: var(--hutan)
+}
+
+.panah button:not(:disabled):active {
+    transform: scale(.95)
+}
+
+.panah button:disabled {
+    opacity: .3;
+    cursor: default
 }
 
 .hitung {
@@ -689,13 +1081,17 @@ button {
     left: 0;
     top: 0;
     bottom: 0;
-    background: var(--kabut);
-    transition: width .4s
+    background: var(--belerang);
+    transition: width .4s var(--lembut)
 }
 
-/* ===== Peta lokasi (kelas baru) ===== */
+/* ===== Peta lokasi ===== */
 .peta {
-    background: var(--kabut)
+    background-color: var(--kabut);
+    background-image: var(--kontur);
+    background-repeat: no-repeat;
+    background-size: min(680px, 110vw);
+    background-position: -200px 108%
 }
 
 .peta-grid {
@@ -767,9 +1163,15 @@ button {
     position: relative;
     z-index: 0;
     height: clamp(380px, 62vh, 620px);
-    border-radius: 4px;
+    border-radius: 2px;
     background: var(--kabut-tua);
-    overflow: hidden
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(42, 54, 49, .18)
+}
+
+/* Warna peta diredam sedikit agar menyatu dengan palet halaman */
+.leaflet-tile-pane {
+    filter: saturate(.7) contrast(.97)
 }
 
 .peta-gagal {
@@ -785,7 +1187,7 @@ button {
 }
 
 .leaflet-popup-content-wrapper {
-    border-radius: 4px
+    border-radius: 2px
 }
 
 .popup-gunung {
@@ -818,7 +1220,13 @@ button {
     color: var(--kabut);
     font-size: .85rem;
     font-weight: 600;
-    cursor: pointer
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease
+}
+
+.popup-tombol:hover {
+    background: var(--belerang);
+    color: var(--hutan)
 }
 
 .pin-wadah {
@@ -834,7 +1242,7 @@ button {
     border-radius: 50%;
     border: 2px solid #fff;
     box-shadow: 0 0 0 1px rgba(19, 38, 31, .45);
-    transition: transform .15s ease
+    transition: transform .2s var(--lembut), box-shadow .2s ease
 }
 
 .pin-wadah:hover .pin {
@@ -846,10 +1254,16 @@ button {
 }
 
 /* ===== Modal detail ===== */
+@keyframes overlayMasuk {
+    from {
+        opacity: 0
+    }
+}
+
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(8, 18, 15, .7);
+    background: rgba(8, 18, 15, .72);
     z-index: 40;
     display: none;
     align-items: center;
@@ -858,19 +1272,21 @@ button {
 }
 
 .overlay.buka {
-    display: flex
+    display: flex;
+    animation: overlayMasuk .25s ease both
 }
 
 .modal {
     background: #fff;
     color: var(--batu);
-    border-radius: 4px;
+    border-radius: 2px;
     max-width: 640px;
     width: 100%;
     max-height: 90vh;
+    max-height: 92svh;
     overflow: auto;
     position: relative;
-    animation: slideUp .3s ease
+    animation: slideUp .4s var(--lembut)
 }
 
 .modal-foto {
@@ -893,14 +1309,32 @@ button {
     line-height: 1.15
 }
 
+/* Baris data seperti legenda peta: garis titik-titik di bawahnya */
 .baris {
     display: flex;
+    justify-content: space-between;
+    align-items: baseline;
     gap: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dotted rgba(42, 54, 49, .35);
     font-size: .95rem
 }
 
 .baris b {
     min-width: 140px;
+    font-weight: 600
+}
+
+.baris>span {
+    text-align: right
+}
+
+.chip {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 2px;
+    font-style: normal;
+    font-size: .82rem;
     font-weight: 600
 }
 
@@ -924,13 +1358,20 @@ button {
     right: 12px;
     width: 36px;
     height: 36px;
-    border-radius: 50%;
+    border-radius: 2px;
     border: 0;
-    background: #fff;
-    color: var(--hutan);
+    background: var(--hutan);
+    color: var(--kabut);
     font-size: 1.3rem;
     line-height: 1;
-    cursor: pointer
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, transform .3s var(--lembut)
+}
+
+.tutup:hover {
+    background: var(--belerang);
+    color: var(--hutan);
+    transform: rotate(90deg)
 }
 
 .modal-aksi {
@@ -952,10 +1393,24 @@ button {
     font: inherit;
     font-weight: 600;
     text-decoration: none;
-    cursor: pointer
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, transform .2s ease
+}
+
+.kembali:hover,
+.modal a.kembali:hover {
+    background: var(--hutan-tengah)
+}
+
+.kembali:active,
+.modal-sekunder:active {
+    transform: translateY(1px)
 }
 
 .modal-sekunder {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     padding: 12px 20px;
     border: 1px solid var(--hutan);
     border-radius: 2px;
@@ -963,7 +1418,121 @@ button {
     color: var(--hutan);
     font: inherit;
     font-weight: 600;
-    cursor: pointer
+    cursor: pointer;
+    transition: background .2s ease, transform .2s ease
+}
+
+.modal-sekunder:hover {
+    background: var(--kabut)
+}
+
+.modal-fav.aktif {
+    background: var(--belerang);
+    border-color: var(--belerang)
+}
+
+/* ===== Deskripsi, fakta, dan sumber referensi di modal ===== */
+.modal .deskripsi {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(42, 54, 49, .18)
+}
+
+.modal .deskripsi-pembuka {
+    font-family: var(--font-judul);
+    font-size: 1.3rem;
+    line-height: 1.4;
+    color: var(--hutan)
+}
+
+.modal .deskripsi h3,
+.modal .sumber h3 {
+    font-family: var(--font-judul);
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.2;
+    color: var(--hutan);
+    margin-top: 8px
+}
+
+.modal .fakta {
+    margin-top: 8px;
+    padding: 16px 18px;
+    background: var(--kabut);
+    border-left: 3px solid var(--belerang)
+}
+
+.modal .fakta h3 {
+    margin-top: 0;
+    margin-bottom: 4px;
+    font-size: 1.05rem
+}
+
+.modal .fakta p {
+    color: var(--batu)
+}
+
+.modal .deskripsi-catatan,
+.modal .deskripsi-menunggu {
+    font-size: .85rem
+}
+
+.modal .deskripsi-menunggu {
+    padding: 14px 16px;
+    border: 1px dashed rgba(42, 54, 49, .35)
+}
+
+.modal .sumber {
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(42, 54, 49, .18)
+}
+
+.modal .sumber h3 {
+    margin-top: 0;
+    margin-bottom: 8px
+}
+
+.modal .sumber ol {
+    padding-left: 1.3em;
+    font-size: .88rem;
+    line-height: 1.6
+}
+
+.modal .sumber li+li {
+    margin-top: 4px
+}
+
+.modal .sumber a {
+    overflow-wrap: anywhere
+}
+
+/* ===== Toast favorit ===== */
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: max(24px, env(safe-area-inset-bottom));
+    z-index: 60;
+    max-width: min(92vw, 28rem);
+    padding: 12px 18px;
+    background: var(--hutan);
+    color: var(--kabut);
+    font-size: .9rem;
+    border-left: 3px solid var(--belerang);
+    border-radius: 2px;
+    box-shadow: 0 10px 30px rgba(8, 18, 15, .35);
+    opacity: 0;
+    transform: translate(-50%, 16px);
+    pointer-events: none;
+    transition: opacity .3s ease, transform .4s var(--lembut)
+}
+
+.toast.tampil {
+    opacity: 1;
+    transform: translate(-50%, 0)
 }
 
 /* ===== Footer ===== */
@@ -987,7 +1556,37 @@ button {
     max-width: 44rem
 }
 
+.ke-atas {
+    justify-self: start;
+    margin-top: 12px;
+    padding-bottom: 2px;
+    color: var(--kabut);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid var(--belerang);
+    transition: color .2s ease
+}
+
+.ke-atas span {
+    display: inline-block;
+    transition: transform .3s var(--lembut)
+}
+
+.ke-atas:hover {
+    color: var(--belerang)
+}
+
+.ke-atas:hover span {
+    transform: translateY(-3px)
+}
+
 /* ===== Responsif ===== */
+@media (max-width:1000px) {
+    .hero-data {
+        display: none
+    }
+}
+
 @media (max-width:900px) {
     .sorotan-grid {
         grid-template-columns: 1fr 1fr;
@@ -1035,6 +1634,10 @@ button {
         font-size: .82rem
     }
 
+    .kartu {
+        flex-basis: min(72vw, 260px)
+    }
+
     .kontrol {
         flex-direction: column-reverse;
         align-items: flex-start
@@ -1049,6 +1652,14 @@ button {
         min-width: 0
     }
 
+    .baris>span {
+        text-align: left
+    }
+
+    .modal .isi {
+        padding: 22px
+    }
+
     .peta-daftar ul {
         columns: 1
     }
@@ -1057,6 +1668,13 @@ button {
 @media (max-width:560px) {
     .navbar .logo-teks {
         display: none
+    }
+}
+
+@media (max-width:380px) {
+    .menu {
+        gap: 10px;
+        font-size: .76rem
     }
 }
 
@@ -1072,8 +1690,14 @@ button {
     html {
         scroll-behavior: auto
     }
+
+    .js [data-reveal] {
+        opacity: 1;
+        transform: none
+    }
 }
-/* ===== TAMBAHAN: Perkiraan cuaca di modal detail gunung ===== */
+
+/* ===== Perkiraan cuaca di modal detail gunung ===== */
 .modal .cuaca {
     margin-top: 8px;
     padding: 16px 18px;

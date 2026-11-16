@@ -6,17 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Puncak Jabar - Rekomendasi Gunung Jawa Barat</title>
     <link rel="shortcut icon" href="jpg/favicon.svg" type="image/x-icon">
+    <meta name="theme-color" content="#13261f">
     <meta name="description"
-        content="Rekomendasi gunung di Jawa Barat lengkap dengan tingkat kesulitan, ketinggian, bookmark, dan peta lokasi.">
+        content="Rekomendasi gunung di Jawa Barat lengkap dengan tingkat kesulitan, ketinggian, favorit, dan peta lokasi.">
 
-    <!-- Font: Newsreader (judul) + Hanken Grotesk (isi). Menggantikan Poppins agar tampilan lebih berkarakter. -->
+    <!-- Penanda JS aktif: animasi muncul-saat-scroll hanya dipakai bila script berjalan, supaya konten tidak pernah tersembunyi. -->
+    <script>document.documentElement.classList.add("js");</script>
+
+    <!-- Font: Newsreader (judul, termasuk miring) + Hanken Grotesk (isi). -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"
         rel="stylesheet">
 
-    <!-- Library baru: Leaflet (peta). Harus dimuat SEBELUM style.css agar override CSS kita berlaku. -->
+    <!-- Leaflet (peta). Harus dimuat SEBELUM style.css agar override CSS kita berlaku. -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 
@@ -38,7 +42,7 @@
             <a href="#beranda" data-bagian="beranda">Beranda</a>
             <a href="#destinasi" data-bagian="destinasi">Destinasi</a>
             <a href="#peta" data-bagian="peta">Peta<span class="hanya-lebar"> Lokasi</span></a>
-            <a href="#destinasi" id="menuBookmark">Bookmark (<span id="jumlahBookmark">0</span>)</a>
+            <a href="#destinasi" id="menuFavorit">Favorit (<span id="jumlahFavorit">0</span>)</a>
         </div>
     </nav>
 
@@ -59,42 +63,79 @@
 
                     <h1 id="judulBeranda">Naik ke <span class="tanpa-putus">puncak-puncak</span> Tanah Pasundan</h1>
                     <div class="garis"></div>
-                    <p>Rekomendasi <span id="jumlahGunung">40</span> gunung di Jawa Barat, dari bukit untuk pemanasan
-                        sampai Ciremai, atap provinsi ini. Cari, saring menurut tingkat kesulitan, simpan yang ingin
-                        Anda daki, lalu lihat letaknya di peta.</p>
-                    <a class="explore" href="#destinasi">Lihat destinasi gunung</a>
+                    <p>Dari bukit untuk pemanasan sampai Ciremai, titik tertinggi di Jawa Barat, ada <span
+                            id="jumlahGunung">40</span> gunung yang bisa Anda jelajahi di sini. Cari menurut nama atau
+                        kabupaten, saring menurut tingkat kesulitan, simpan yang ingin didaki ke daftar favorit, lalu
+                        lihat letaknya di peta.</p>
+                    <a class="explore" href="#destinasi">
+                        Lihat destinasi gunung
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 5v14M6 13l6 6 6-6" />
+                        </svg>
+                    </a>
                 </div>
+
+                <!-- Ringkasan angka (diisi script.js dari data gunung) -->
+                <dl class="hero-data" aria-label="Ringkasan data gunung">
+                    <div>
+                        <dt>Gunung terdaftar</dt>
+                        <dd><span id="statJumlah">40</span></dd>
+                    </div>
+                    <div>
+                        <dt>Puncak tertinggi</dt>
+                        <dd><span id="statTinggi">3.078</span> <small>mdpl</small></dd>
+                        <dd class="nama" id="statNama">Gunung Ciremai</dd>
+                    </div>
+                </dl>
             </div>
+
+            <!-- Punggung bukit: dua lapis siluet, warna depan menyatu dengan bagian berikutnya -->
+            <svg class="punggung" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+                <path class="belakang"
+                    d="M0 70 L90 52 L170 66 L260 34 L330 58 L420 40 L520 72 L610 46 L700 64 L790 30 L880 56 L970 44 L1060 70 L1150 38 L1240 60 L1330 48 L1440 66 L1440 120 L0 120Z" />
+                <path class="depan"
+                    d="M0 98 L120 84 L210 96 L330 74 L430 92 L560 80 L680 100 L800 82 L930 96 L1050 78 L1170 94 L1290 82 L1440 96 L1440 120 L0 120Z" />
+            </svg>
         </section>
 
         <!-- ===== TIGA PUNCAK TERTINGGI (diisi script.js dari data gunung) ===== -->
         <section class="bagian puncak" id="puncak-tertinggi" aria-labelledby="judulPuncak">
             <div class="sorotan-grid">
-                <div class="sorotan-teks">
+                <div class="sorotan-teks" data-reveal>
+                    <span class="label"><b>01</b> Puncak tertinggi</span>
                     <h2 id="judulPuncak">Tiga atap tertinggi Jawa Barat</h2>
-                    <p>Tiga gunung tertinggi dalam daftar ini menuntut persiapan matang. Periksa aturan pendakian dan
-                        kuota resmi sebelum berangkat.</p>
+                    <p>Di ketinggian sekitar tiga ribu meter, kabut dan hawa dingin datang dengan cepat. Tiga gunung
+                        tertinggi dalam daftar ini menuntut persiapan matang, jadi periksa aturan pendakian dan kuota
+                        resmi sebelum berangkat. Pilih salah satunya untuk membaca cerita dan datanya.</p>
                 </div>
                 <div id="sorotan"></div>
             </div>
         </section>
 
-        <!-- ===== DESTINASI GUNUNG (katalog lama: filter, pencarian, carousel, penghitung) ===== -->
+        <!-- ===== DESTINASI GUNUNG (katalog: filter, pencarian, carousel, penghitung) ===== -->
         <section class="bagian destinasi" id="destinasi" aria-labelledby="judulDestinasi">
             <div class="bagian-kepala">
-                <div class="pengantar">
+                <div class="pengantar" data-reveal>
+                    <span class="label"><b>02</b> Destinasi</span>
                     <h2 id="judulDestinasi">Pilih gunung sesuai kemampuan</h2>
-                    <p>Cari nama gunung atau kabupaten, saring menurut tingkat kesulitan, lalu simpan gunung yang ingin
-                        Anda daki lewat ikon bookmark di foto. Klik kartu untuk melihat detail.</p>
+                    <p>Setiap gunung punya wataknya sendiri. Cari nama gunung atau kabupaten, saring menurut tingkat
+                        kesulitan, lalu simpan gunung yang ingin Anda daki lewat ikon hati di foto. Klik kartu untuk
+                        melihat detail, cerita, dan sumber referensinya.</p>
                 </div>
 
-                <div class="alat">
+                <div class="alat" data-reveal style="--d:120ms">
                     <div class="filter" id="filter" role="group" aria-label="Filter tingkat kesulitan">
-                        <button class="pil aktif" type="button">Semua</button>
-                        <button class="pil" type="button">Pemula</button>
-                        <button class="pil" type="button">Menengah</button>
-                        <button class="pil" type="button">Mahir</button>
-                        <button class="pil" type="button">Bookmark</button>
+                        <button class="pil aktif" type="button" data-kategori="Semua" aria-pressed="true">Semua<span
+                                class="jml"></span></button>
+                        <button class="pil" type="button" data-kategori="Pemula" aria-pressed="false">Pemula<span
+                                class="jml"></span></button>
+                        <button class="pil" type="button" data-kategori="Menengah" aria-pressed="false">Menengah<span
+                                class="jml"></span></button>
+                        <button class="pil" type="button" data-kategori="Mahir" aria-pressed="false">Mahir<span
+                                class="jml"></span></button>
+                        <button class="pil" type="button" data-kategori="Favorit" aria-pressed="false">Favorit<span
+                                class="jml"></span></button>
                     </div>
 
                     <div class="cari-wrap">
@@ -111,9 +152,9 @@
             </div>
 
             <!-- Kartu dirender oleh script.js dari data 40 gunung -->
-            <div class="strip" id="strip" aria-label="Daftar gunung"></div>
+            <div class="strip" id="strip" aria-label="Daftar gunung" data-reveal style="--d:200ms"></div>
 
-            <div class="kontrol">
+            <div class="kontrol" data-reveal>
                 <div class="panah">
                     <button type="button" aria-label="Sebelumnya">&#8592;</button>
                     <button type="button" aria-label="Berikutnya">&#8594;</button>
@@ -130,10 +171,12 @@
         <!-- ===== PETA LOKASI GUNUNG ===== -->
         <section class="bagian peta" id="peta" aria-labelledby="judulPeta">
             <div class="peta-grid">
-                <div class="peta-teks">
+                <div class="peta-teks" data-reveal>
+                    <span class="label"><b>03</b> Peta lokasi</span>
                     <h2 id="judulPeta">Peta lokasi gunung</h2>
-                    <p>Warna penanda mengikuti tingkat kesulitan. Klik penanda untuk ringkasan, lalu buka detail
-                        lengkapnya. Gunung yang sudah Anda bookmark diberi lingkaran tambahan.</p>
+                    <p>Setiap penanda adalah satu gunung, dan warnanya mengikuti tingkat kesulitan. Klik penanda untuk
+                        ringkasan singkat, lalu buka detail lengkapnya. Gunung yang Anda tandai sebagai favorit diberi
+                        lingkaran tambahan.</p>
 
                     <ul class="legenda" aria-label="Keterangan warna penanda">
                         <li><i class="Pemula"></i>Pemula</li>
@@ -150,7 +193,7 @@
                     </details>
                 </div>
 
-                <div class="peta-kanvas" id="petaGunung" role="region"
+                <div class="peta-kanvas" id="petaGunung" role="region" data-reveal="fade" style="--d:150ms"
                     aria-label="Peta interaktif lokasi gunung Jawa Barat"></div>
             </div>
         </section>
@@ -159,14 +202,19 @@
     <footer class="kaki">
         <strong>Puncak Jabar</strong>
         <p>Rekomendasi Gunung Jawa Barat. Periksa kondisi jalur dan aturan pendakian resmi sebelum berangkat.</p>
+        <p>Cerita dan fakta pada detail gunung disusun dari sumber yang dicantumkan di bagian Sumber Referensi. Gunung yang belum punya cerita masih menunggu sumber yang bisa diverifikasi.</p>
         <p>Koordinat penanda bersumber dari Wikipedia, Gunung Bagging, dan daftar gunung api BIRA-IASB. Peta &copy;
             OpenStreetMap contributors.</p>
+        <a class="ke-atas" href="#beranda">Kembali ke atas <span aria-hidden="true">&uarr;</span></a>
     </footer>
 
     <!-- ===== Modal detail gunung ===== -->
     <div class="overlay" id="overlay" aria-hidden="true">
         <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="judulModal"></div>
     </div>
+
+    <!-- Umpan balik singkat saat favorit berubah -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>

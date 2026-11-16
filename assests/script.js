@@ -62,9 +62,195 @@ const koordinatGunung = {
 };
 
 const KETERANGAN_KESULITAN = {
-    Pemula: "Kategori Pemula: jalur relatif ringan dan cocok untuk pendaki yang baru memulai.",
-    Menengah: "Kategori Menengah: butuh stamina dan pengalaman mendaki dasar.",
-    Mahir: "Kategori Mahir: jalur panjang dan menanjak, disarankan untuk pendaki berpengalaman."
+    Pemula: "Kategori Pemula: jalurnya relatif ringan dan cocok untuk pendaki yang baru memulai. Tetap bawa perlengkapan dasar dan cek cuaca sebelum berangkat.",
+    Menengah: "Kategori Menengah: butuh stamina yang terlatih dan pengalaman mendaki dasar. Cocok dicoba setelah beberapa kali mendaki gunung yang lebih ringan.",
+    Mahir: "Kategori Mahir: jalurnya panjang dan menanjak, jadi disarankan untuk pendaki berpengalaman dengan persiapan yang matang."
+};
+
+// =====================================================================
+// Deskripsi gunung. Setiap isi disusun dari sumber yang dicantumkan pada
+// entrinya (sumber: [{ judul, url }]). Hanya fakta yang tertulis di sumber
+// tersebut yang dimasukkan. Gunung yang belum punya entri di sini belum
+// diverifikasi sumbernya, sehingga detailnya hanya menampilkan data dasar.
+// Untuk menambah: salin satu entri, isi dengan fakta dari sumber yang bisa
+// dibuka, dan cantumkan tautan langsung ke halaman yang membahasnya.
+// =====================================================================
+const SUMBER = {
+    wikiCiremai: { judul: "Wikipedia: Mount Ciremai", url: "https://en.wikipedia.org/wiki/Mount_Ciremai" },
+    wikiTNCiremai: { judul: "Wikipedia: Mount Ciremai National Park", url: "https://en.wikipedia.org/wiki/Mount_Ciremai_National_Park" },
+    bagCiremai: { judul: "Gunung Bagging: Gunung Ciremai", url: "https://www.gunungbagging.com/ciremai/" },
+    wikiTNGede: { judul: "Wikipedia: Mount Gede Pangrango National Park", url: "https://en.wikipedia.org/wiki/Mount_Gede_Pangrango_National_Park" },
+    wikiGede: { judul: "Wikipedia: Mount Gede", url: "https://wikiwand.com/en/articles/Gunung_gede" },
+    wikiPapandayan: { judul: "Wikipedia: Mount Papandayan", url: "https://en.wikipedia.org/wiki/Mount_Papandayan" },
+    wikiTangkuban: { judul: "Wikipedia: Tangkuban Perahu", url: "https://en.wikipedia.org/wiki/Tangkuban_Perahu" },
+    wikiGalunggung: { judul: "Wikipedia: Galunggung", url: "https://en.wikipedia.org/wiki/Galunggung" },
+    gvpGalunggung: { judul: "Smithsonian Global Volcanism Program: Galunggung", url: "https://volcano.si.edu/volcano.cfm?vn=263140" }
+};
+
+const deskripsiGunung = {
+    1: {
+        pembuka: "Dari jalur kereta di pesisir utara Jawa, kerucut Ciremai terlihat jelas menjulang di selatan. Wajar saja: inilah titik tertinggi di Jawa Barat.",
+        bagian: [
+            {
+                judul: "Gunung api berbentuk kerucut",
+                isi: [
+                    "Ciremai adalah stratovolcano yang simetris, terletak di barat daya Cirebon dan masuk wilayah Kuningan serta Majalengka. Di puncaknya ada kawah selebar sekitar setengah kilometer. Letusan di masa sejarah relatif jarang; aktivitas eksplosif dan lahar dari kawah puncak pernah tercatat, dan letusan terakhirnya terjadi pada Maret 1951.",
+                    "Nama Ciremai atau Cereme berasal dari kata Sunda untuk buah ceremai."
+                ]
+            },
+            {
+                judul: "Cerita di kaki gunung",
+                isi: [
+                    "Lereng Ciremai menyimpan lebih dari sekadar jalur pendakian. Di Linggajati ada museum yang mengisahkan Perundingan Linggajati pada masa perjuangan kemerdekaan tahun 1946. Di tenggara, dekat Kuningan, terdapat situs megalitik Cipari, situs arkeologi penting dari masa prasejarah. Sementara di Cilimus ada pemandian air panas alami Sangkanhurip."
+                ]
+            },
+            {
+                judul: "Soal pendakian",
+                isi: [
+                    "Pendaki biasanya memulai dari Linggajati di timur, Palutungan di selatan dekat Cigugur, atau dari arah Majalengka di barat. Perjalanan pergi-pulang sering memakan 12 jam atau lebih, dan sebagian kelompok bermalam di gunung. Seperti di banyak gunung lain di Indonesia, pendaki diharapkan mendaftar dulu kepada petugas setempat. Pendaki yang kurang berpengalaman kadang menemui kesulitan, jadi persiapan penting."
+                ]
+            },
+            {
+                judul: "Taman nasional",
+                isi: [
+                    "Kawasan di sekeliling gunung ditetapkan sebagai Taman Nasional Gunung Ciremai, sekitar 50 km di selatan Cirebon. Di sana tercatat satwa seperti macan tutul, muncak, surili jawa, dan elang jawa, serta berbagai jenis ular piton."
+                ]
+            }
+        ],
+        fakta: "Di kolam alami Cigugur dan Cibulan hidup ikan kancra bodas, yang oleh warga setempat dianggap ikan keramat.",
+        sumber: [SUMBER.wikiCiremai, SUMBER.wikiTNCiremai, SUMBER.bagCiremai]
+    },
+
+    2: {
+        pembuka: "Namanya sudah menjelaskan banyak hal: dalam bahasa Sunda, gede berarti besar.",
+        bagian: [
+            {
+                judul: "Si kembar dari Jawa Barat",
+                isi: [
+                    "Gede adalah stratovolcano yang berpasangan dengan Pangrango sebagai gunung kembar. Keduanya dihubungkan pelana tinggi bernama Kandang Badak. Letusan terakhir Gede tercatat pada Maret 1957, dan pendakian pertamanya yang tercatat dilakukan oleh Raffles pada 1815. Jalur yang disebut paling mudah adalah lewat Gunung Putri."
+                ]
+            },
+            {
+                judul: "Satu taman nasional untuk dua gunung",
+                isi: [
+                    "Gede dan Pangrango berada dalam satu taman nasional seluas sekitar 150 km persegi. Kawasan ini tumbuh dari area konservasi yang sudah ada sebelumnya, termasuk Kebun Raya Cibodas, dan sejak 1977 diakui UNESCO sebagai bagian dari jaringan cagar biosfer dunia.",
+                    "Hutan pegunungan bawah dan atas hingga zona subalpin di taman ini sudah banyak diteliti. Di sisi utara Gede terhampar padang edelweis jawa (Anaphalis javanica), dan di hutannya hidup antara lain elang jawa dan celepuk jawa. Taman nasional ini juga menjadi hulu bagi empat daerah aliran sungai di sekitarnya."
+                ]
+            }
+        ],
+        fakta: "Pendakian Gede yang paling awal tercatat dilakukan pada 1815 oleh Raffles.",
+        catatan: "Angka ketinggian berbeda antar sumber: 2.958 m menurut keterangan taman nasional (dipakai di situs ini), sedangkan Global Volcanism Program mencatat 3.026 m.",
+        sumber: [SUMBER.wikiGede, SUMBER.wikiTNGede]
+    },
+
+    3: {
+        pembuka: "Pangrango sedikit lebih tinggi daripada Gede, saudara kembarnya: 3.019 mdpl berbanding 2.958 mdpl.",
+        bagian: [
+            {
+                judul: "Dua puncak, satu pelana",
+                isi: [
+                    "Pangrango dan Gede adalah gunung api kembar yang dihubungkan pelana tinggi bernama Kandang Badak. Keduanya menjadi inti Taman Nasional Gunung Gede Pangrango di Jawa Barat, dengan Bogor sebagai kota terdekat.",
+                    "Hutan pegunungan bawah dan atas hingga zona subalpin di taman nasional ini sudah banyak diteliti. Kawasan ini juga menjadi hulu bagi empat daerah aliran sungai dan, sejak 1977, diakui UNESCO sebagai bagian dari jaringan cagar biosfer dunia."
+                ]
+            }
+        ],
+        fakta: "Dua gunung ini bisa dibilang kembar, tetapi Pangrango yang menang tipis dalam urusan tinggi badan.",
+        sumber: [SUMBER.wikiTNGede]
+    },
+
+    4: {
+        pembuka: "Di Papandayan, kawah yang berasap dan berwarna kuning bisa dilihat dari jarak dekat, lengkap dengan kolam lumpur yang menggelegak.",
+        bagian: [
+            {
+                judul: "Kawah-kawah yang masih bernapas",
+                isi: [
+                    "Papandayan adalah stratovolcano kompleks di Kabupaten Garut, sekitar 15 km di barat daya kota Garut. Di puncaknya ada empat kawah besar yang berisi lapangan fumarol aktif. Pengunjung bisa berjalan melintasi kawah dan melihat kolam lumpur mendidih, semburan uap, serta endapan belerang."
+                ]
+            },
+            {
+                judul: "Letusan 1772",
+                isi: [
+                    "Letusan pada 1772 meruntuhkan lereng timur laut gunung dan memicu longsoran besar yang menghancurkan 40 desa serta menewaskan hampir 3.000 orang. Sesudahnya, hanya letusan freatik kecil yang tercatat sampai letusan eksplosif pada November 2002."
+                ]
+            },
+            {
+                judul: "Hutan kerdil dan edelweis",
+                isi: [
+                    "Di atas kawah terdapat hutan kerdil dan beberapa padang edelweis jawa."
+                ]
+            }
+        ],
+        fakta: "Dari kejauhan Papandayan tampak seperti gunung kembar. Letusan memangkas bentuknya menjadi dua puncak, yaitu Papandayan dan Puntang, dengan dataran selebar 1,1 km yang berisi kawah Alun-Alun di tengahnya.",
+        sumber: [SUMBER.wikiPapandayan]
+    },
+
+    9: {
+        pembuka: "Dilihat dari samping, puncaknya menyerupai perahu yang terbalik, dan memang begitulah arti namanya dalam bahasa Sunda.",
+        bagian: [
+            {
+                judul: "Legenda Sangkuriang",
+                isi: [
+                    "Menurut cerita rakyat, Sangkuriang jatuh cinta pada Dayang Sumbi tanpa menyadari bahwa ia adalah ibunya. Untuk menggagalkan pernikahan itu, Dayang Sumbi meminta Sangkuriang membendung Sungai Citarum dan membuat perahu besar sebelum matahari terbit. Ketika pekerjaan hampir rampung, Dayang Sumbi menghamparkan kain sutra merah di timur kota agar tampak seperti fajar. Sangkuriang mengira ia gagal, lalu menendang bendungan dan perahu yang belum selesai. Perahu itu jatuh telungkup dan menjadi Tangkuban Parahu."
+                ]
+            },
+            {
+                judul: "Sisa gunung purba",
+                isi: [
+                    "Bersama Gunung Burangrang dan Bukit Tunggul, Tangkuban Parahu adalah sisa Gunung Sunda purba, yang kalderanya runtuh setelah letusan plinian. Gunung ini terletak di Lembang, Kabupaten Bandung Barat."
+                ]
+            },
+            {
+                judul: "Gunung yang masih aktif",
+                isi: [
+                    "Sebuah studi pada 2001 menyimpulkan bahwa Tangkuban Parahu telah meletus sedikitnya 30 kali dalam 40.750 tahun terakhir. Letusan terakhir tercatat pada 26 Juli 2019. Kawah terbesarnya adalah Kawah Ratu. Wisatawan bisa mendekati bibir kawah untuk melihat mata air panas dan lumpur mendidih, bahkan membeli telur yang direbus memakai panas dari permukaan tanah.",
+                    "Di lereng utaranya ada area bernama Lembah Maut, yang dinamai demikian karena sering menjadi tempat berkumpulnya gas beracun. Karena gunung ini aktif, kunjungan bisa ditutup sewaktu-waktu mengikuti kondisi aktivitasnya."
+                ]
+            }
+        ],
+        fakta: "Pendakian pertama Tangkuban Parahu yang tercatat dilakukan pada 1713 oleh Abraham van Riebeeck.",
+        sumber: [SUMBER.wikiTangkuban]
+    },
+
+    10: {
+        pembuka: "Burangrang adalah salah satu keping yang tersisa dari gunung purba bernama Gunung Sunda.",
+        bagian: [
+            {
+                judul: "Bagian dari Gunung Sunda purba",
+                isi: [
+                    "Bersama Tangkuban Parahu dan Bukit Tunggul, Burangrang merupakan sisa Gunung Sunda purba setelah letusan plinian meruntuhkan kalderanya."
+                ]
+            }
+        ],
+        sumber: [SUMBER.wikiTangkuban]
+    },
+
+    22: {
+        pembuka: "Pada 1982, awan abu dari Galunggung hampir menjatuhkan sebuah pesawat jumbo jet, dan sejak itu dunia penerbangan memandang abu vulkanik dengan lebih waspada.",
+        bagian: [
+            {
+                judul: "Letusan 1982-1983",
+                isi: [
+                    "Letusan dimulai pada 5 April 1982, menghancurkan sebagian besar kubah lava yang terbentuk pada 1918, dan berlangsung hingga awal 1983. Tinggi kolom abu terbesar yang dilaporkan mencapai 16,5 km, dan sekitar 62.000 orang harus diungsikan dari kawasan padat penduduk di sekitar gunung.",
+                    "Pada 24 Juni 1982, sebuah jumbo jet British Airways dengan 240 orang di dalamnya terbang menembus awan abu pada ketinggian sekitar 11 km. Keempat mesinnya mati dan pesawat turun sejauh 7,5 km sebelum mesin berhasil dihidupkan kembali, lalu mendarat dengan selamat di Jakarta. Pada Juli, sebuah jumbo jet Singapore Airlines mengalami hal serupa dan juga mendarat selamat di Jakarta. Setelah itu lalu lintas udara dialihkan menjauhi Galunggung."
+                ]
+            },
+            {
+                judul: "Letusan yang lebih mematikan",
+                isi: [
+                    "Letusan pertama yang tercatat pada 1822 menghasilkan awan panas dan lahar yang menewaskan 4.011 orang. Letusan eksplosif yang berpusat di danau kawah tercatat empat kali: 1822, 1894, 1918, dan 1982-1983."
+                ]
+            },
+            {
+                judul: "Kawah dan sepuluh ribu bukit",
+                isi: [
+                    "Danau di kawah kerucutnya berdiameter sekitar 1 km dengan kedalaman biasa sekitar 11 m menurut laporan PVMBG tahun 2012. Di tengah danau ada kerucut skoria setinggi 30 m yang terbentuk pada tahap akhir letusan 1982-1983.",
+                    "Di dataran bawah gunung tersebar bukit-bukit kecil yang dijuluki Sepuluh Ribu Bukit Tasikmalaya. Para ahli kini memahaminya sebagai endapan longsoran besar dari runtuhnya lereng gunung ini."
+                ]
+            }
+        ],
+        fakta: "Letusan 1982 membuat bahaya abu vulkanik bagi pesawat mendapat perhatian dunia, dan jalur penerbangan pun dialihkan menjauhi gunung ini.",
+        sumber: [SUMBER.gvpGalunggung, SUMBER.wikiGalunggung]
+    }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -81,32 +267,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("modal");
     const navbar = document.getElementById("navbar");
     const hero = document.getElementById("beranda");
-    const jumlahBookmark = document.getElementById("jumlahBookmark");
+    const jumlahFavorit = document.getElementById("jumlahFavorit");
+    const toastEl = document.getElementById("toast");
 
-    const KUNCI_BOOKMARK = "puncak_jabar_bookmarks";
+    // Nama kunci lama dipertahankan agar daftar yang sudah tersimpan di browser pengguna tidak hilang.
+    const KUNCI_FAVORIT = "puncak_jabar_bookmarks";
+    const KURANGI_GERAK = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const TINGGI_MAKS = Math.max(...dataGunung.map(g => g.mdpl));
+
+    // Ikon hati (dipakai di kartu dan modal); isinya diwarnai lewat CSS saat aktif
+    const IKON_HATI = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>`;
 
     let filteredData = [...dataGunung];
-    let bookmarkedIds = bacaBookmark();
+    let favoritIds = bacaFavorit();
     let petaLeaflet = null;
     const markerPeta = {};
     let gunungModalId = null;
     let fokusSebelumModal = null;
+    let barusGeser = false;
+    let timerToast = null;
 
     // ---------- Util ----------
-    function bacaBookmark() {
+    function bacaFavorit() {
         try {
-            const data = JSON.parse(localStorage.getItem(KUNCI_BOOKMARK));
+            const data = JSON.parse(localStorage.getItem(KUNCI_FAVORIT));
             return Array.isArray(data) ? data : [];
         } catch (e) {
             return [];
         }
     }
 
-    function simpanBookmark() {
+    function simpanFavorit() {
         try {
-            localStorage.setItem(KUNCI_BOOKMARK, JSON.stringify(bookmarkedIds));
+            localStorage.setItem(KUNCI_FAVORIT, JSON.stringify(favoritIds));
         } catch (e) {
-            // penyimpanan diblokir (mis. mode privat): bookmark tetap jalan selama halaman terbuka
+            // penyimpanan diblokir (mis. mode privat): favorit tetap jalan selama halaman terbuka
         }
     }
 
@@ -124,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function kategoriAktif() {
         const btnAktif = document.querySelector("#filter .pil.aktif");
-        return btnAktif ? btnAktif.textContent.trim() : "Semua";
+        return btnAktif ? btnAktif.dataset.kategori : "Semua";
     }
 
     function linkGoogleMaps(gunung) {
@@ -133,38 +328,66 @@ document.addEventListener("DOMContentLoaded", () => {
         return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(kueri)}`;
     }
 
+    function labelFavorit(gunung, aktif) {
+        return `${aktif ? "Hapus" : "Tambahkan"} ${gunung.nama} ${aktif ? "dari" : "ke"} favorit`;
+    }
+
+    function tampilkanToast(pesan) {
+        if (!toastEl) return;
+        toastEl.textContent = pesan;
+        toastEl.classList.add("tampil");
+        clearTimeout(timerToast);
+        timerToast = setTimeout(() => toastEl.classList.remove("tampil"), 2200);
+    }
+
+    // Jumlah di tiap tombol filter (Semua / tingkat kesulitan / Favorit)
+    function perbaruiJumlahFilter() {
+        filterButtons.forEach(btn => {
+            const k = btn.dataset.kategori;
+            let n;
+            if (k === "Semua") n = dataGunung.length;
+            else if (k === "Favorit") n = favoritIds.length;
+            else n = dataGunung.filter(g => kelasKesulitan(g.kesulitan) === k).length;
+            const el = btn.querySelector(".jml");
+            if (el) el.textContent = n;
+        });
+    }
+
     // Render Kartu Gunung
-    function renderCards(data) {
+    function renderCards(data, animasi = false) {
+        strip.classList.toggle("masuk", animasi && !KURANGI_GERAK);
         strip.innerHTML = "";
 
         if (data.length === 0) {
-            const pesan = kategoriAktif() === "Bookmark" && !inputCari.value.trim()
-                ? "Belum ada bookmark. Tekan ikon bookmark di foto gunung untuk menyimpannya."
+            const pesan = kategoriAktif() === "Favorit" && !inputCari.value.trim()
+                ? "Belum ada favorit. Tekan ikon hati di foto gunung untuk menyimpannya."
                 : "Tidak ada gunung yang cocok. Ubah kata kunci atau pilih filter lain.";
             strip.innerHTML = `<p class="strip-kosong">${pesan}</p>`;
             updateCounter(0, 0);
             if (bar) bar.style.width = "0%";
+            if (panahKiri) panahKiri.disabled = true;
+            if (panahKanan) panahKanan.disabled = true;
             return;
         }
 
-        data.forEach(item => {
-            const isBookmarked = bookmarkedIds.includes(item.id);
+        data.forEach((item, i) => {
+            const aktif = favoritIds.includes(item.id);
+            const kelas = kelasKesulitan(item.kesulitan);
             const kartu = document.createElement("article");
             kartu.className = "kartu";
             kartu.dataset.id = item.id;
             kartu.tabIndex = 0;
+            kartu.style.setProperty("--i", Math.min(i, 8));
 
             kartu.innerHTML = `
                 <h3 title="${item.nama}">${item.nama}</h3>
-                <div class="foto" style="background-image: url('${item.foto}');">
+                <div class="foto">
+                    <span class="foto-gambar" style="background-image: url('${item.foto}');"></span>
                     <span class="placeholder-gambar" style="display:none;">${item.nama}</span>
-                    <button class="bookmark ${isBookmarked ? 'aktif' : ''}" type="button" data-id="${item.id}"
-                        aria-pressed="${isBookmarked}" aria-label="${isBookmarked ? 'Hapus' : 'Simpan'} ${item.nama} ${isBookmarked ? 'dari' : 'ke'} bookmark">
-                        <svg width="14" height="16" viewBox="0 0 14 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
-                            <path d="M1.8 1.8h10.4v12.4L7 10.8l-5.2 3.4z" />
-                        </svg>
-                    </button>
-                    <span class="tag ${kelasKesulitan(item.kesulitan)}">${kelasKesulitan(item.kesulitan)}</span>
+                    <button class="favorit ${aktif ? 'aktif' : ''}" type="button" data-id="${item.id}"
+                        aria-pressed="${aktif}" aria-label="${labelFavorit(item, aktif)}">${IKON_HATI}</button>
+                    <span class="tag ${kelas}">${kelas}</span>
+                    <span class="lihat" aria-hidden="true">Lihat detail</span>
                 </div>
                 <div class="kartu-meta">
                     <span>Ketinggian</span>
@@ -172,11 +395,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span>Lokasi</span>
                     <strong>${item.lokasi}</strong>
                 </div>
+                <span class="tinggi" aria-hidden="true"><i style="width: ${(item.mdpl / TINGGI_MAKS * 100).toFixed(1)}%"></i></span>
             `;
 
-            // Modal Click Event (Kecuali tombol bookmark)
+            // Jika foto gagal dimuat, tampilkan nama gunung sebagai pengganti
+            const uji = new Image();
+            uji.onerror = () => {
+                const ph = kartu.querySelector(".placeholder-gambar");
+                if (ph) ph.style.display = "grid";
+            };
+            uji.src = item.foto;
+
+            // Modal Click Event (kecuali tombol favorit)
             kartu.addEventListener("click", (e) => {
-                if (!e.target.closest(".bookmark")) {
+                if (!e.target.closest(".favorit")) {
                     bukaModal(item);
                 }
             });
@@ -192,12 +424,12 @@ document.addEventListener("DOMContentLoaded", () => {
             strip.appendChild(kartu);
         });
 
-        // Event listener untuk tombol bookmark
-        strip.querySelectorAll(".bookmark").forEach(btn => {
+        // Event listener untuk tombol favorit
+        strip.querySelectorAll(".favorit").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 e.stopPropagation();
-                const id = parseInt(btn.dataset.id);
-                toggleBookmark(id);
+                const id = parseInt(btn.dataset.id, 10);
+                toggleFavorit(id);
             });
         });
 
@@ -214,10 +446,10 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.classList.add("aktif");
             btn.setAttribute("aria-pressed", "true");
 
-            const kategori = btn.textContent.trim();
+            const kategori = btn.dataset.kategori;
             const kataKunci = inputCari.value.toLowerCase().trim();
 
-            terapkanFilterDanCari(kategori, kataKunci);
+            terapkanFilterDanCari(kategori, kataKunci, false, true);
         });
     });
 
@@ -233,13 +465,13 @@ document.addEventListener("DOMContentLoaded", () => {
         inputCari.focus();
     });
 
-    function terapkanFilterDanCari(kategori, kataKunci, tetapDiPosisi = false) {
+    function terapkanFilterDanCari(kategori, kataKunci, tetapDiPosisi = false, animasi = false) {
         filteredData = dataGunung.filter(g => {
             let cocokKategori;
             if (kategori === "Semua") {
                 cocokKategori = true;
-            } else if (kategori === "Bookmark") {
-                cocokKategori = bookmarkedIds.includes(g.id);
+            } else if (kategori === "Favorit") {
+                cocokKategori = favoritIds.includes(g.id);
             } else {
                 cocokKategori = kelasKesulitan(g.kesulitan) === kategori;
             }
@@ -248,45 +480,66 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const posisi = tetapDiPosisi ? strip.scrollLeft : 0;
-        renderCards(filteredData);
+        renderCards(filteredData, animasi);
         strip.scrollLeft = posisi;
         updateProgress();
     }
 
-    // Toggle Bookmark (disinkronkan ke kartu, modal, jumlah di navbar, dan marker peta)
-    function toggleBookmark(id) {
-        const index = bookmarkedIds.indexOf(id);
+    // Toggle Favorit (disinkronkan ke kartu, modal, jumlah di navbar, filter, dan marker peta)
+    function toggleFavorit(id) {
+        const gunung = cariGunung(id);
+        const index = favoritIds.indexOf(id);
+        const ditambah = index === -1;
 
-        if (index > -1) {
-            bookmarkedIds.splice(index, 1);
+        if (ditambah) {
+            favoritIds.push(id);
         } else {
-            bookmarkedIds.push(id);
+            favoritIds.splice(index, 1);
         }
 
-        simpanBookmark();
-        perbaruiBookmarkUI();
+        simpanFavorit();
+        perbaruiFavoritUI(id);
+        if (gunung) tampilkanToast(`${gunung.nama} ${ditambah ? "ditambahkan ke" : "dihapus dari"} Favorit`);
 
-        // Di tampilan Bookmark, kartu yang dihapus harus hilang dari daftar
-        if (kategoriAktif() === "Bookmark") {
+        // Di tampilan Favorit, kartu yang dihapus harus hilang dari daftar
+        if (kategoriAktif() === "Favorit") {
             jalankanPencarian(true);
         }
     }
 
-    function perbaruiBookmarkUI() {
-        document.querySelectorAll(".bookmark[data-id]").forEach(btn => {
-            const id = parseInt(btn.dataset.id);
-            const aktif = bookmarkedIds.includes(id);
+    function perbaruiFavoritUI(idBerubah) {
+        document.querySelectorAll(".favorit[data-id]").forEach(btn => {
+            const id = parseInt(btn.dataset.id, 10);
+            const aktif = favoritIds.includes(id);
             const g = cariGunung(id);
             btn.classList.toggle("aktif", aktif);
             btn.setAttribute("aria-pressed", String(aktif));
-            if (g) btn.setAttribute("aria-label", `${aktif ? "Hapus" : "Simpan"} ${g.nama} ${aktif ? "dari" : "ke"} bookmark`);
+            if (g) btn.setAttribute("aria-label", labelFavorit(g, aktif));
+            if (id === idBerubah && !KURANGI_GERAK) {
+                btn.classList.remove("pop");
+                void btn.offsetWidth; // mulai ulang animasi
+                btn.classList.add("pop");
+            }
         });
 
-        if (jumlahBookmark) jumlahBookmark.textContent = bookmarkedIds.length;
+        if (jumlahFavorit) {
+            jumlahFavorit.textContent = favoritIds.length;
+            if (idBerubah !== undefined && !KURANGI_GERAK) {
+                jumlahFavorit.classList.remove("naik");
+                void jumlahFavorit.offsetWidth;
+                jumlahFavorit.classList.add("naik");
+            }
+        }
 
-        const tombolModal = document.getElementById("modalBookmark");
+        perbaruiJumlahFilter();
+
+        const tombolModal = document.getElementById("modalFavorit");
         if (tombolModal && gunungModalId !== null) {
-            tombolModal.textContent = bookmarkedIds.includes(gunungModalId) ? "Hapus dari bookmark" : "Simpan ke bookmark";
+            const aktif = favoritIds.includes(gunungModalId);
+            tombolModal.classList.toggle("aktif", aktif);
+            tombolModal.setAttribute("aria-pressed", String(aktif));
+            const label = tombolModal.querySelector(".label-fav");
+            if (label) label.textContent = aktif ? "Hapus dari favorit" : "Simpan ke favorit";
         }
 
         perbaruiIkonPeta();
@@ -310,7 +563,45 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Update Progress Bar & Counter
+    // Geser carousel dengan menyeret (khusus mouse; layar sentuh sudah punya geser bawaan)
+    let seret = null;
+
+    strip.addEventListener("pointerdown", (e) => {
+        if (e.pointerType !== "mouse" || e.button !== 0) return;
+        seret = { x: e.clientX, kiri: strip.scrollLeft, bergeser: false };
+    });
+
+    window.addEventListener("pointermove", (e) => {
+        if (!seret) return;
+        const dx = e.clientX - seret.x;
+        if (!seret.bergeser && Math.abs(dx) > 6) {
+            seret.bergeser = true;
+            strip.classList.add("digeser");
+        }
+        if (seret.bergeser) strip.scrollLeft = seret.kiri - dx;
+    });
+
+    function akhiriSeret() {
+        if (!seret) return;
+        if (seret.bergeser) {
+            barusGeser = true; // cegah klik yang menyusul membuka modal
+            setTimeout(() => { barusGeser = false; }, 0);
+        }
+        strip.classList.remove("digeser");
+        seret = null;
+    }
+
+    window.addEventListener("pointerup", akhiriSeret);
+    window.addEventListener("pointercancel", akhiriSeret);
+
+    strip.addEventListener("click", (e) => {
+        if (barusGeser) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    }, true);
+
+    // Update Progress Bar, Counter, dan status panah
     function updateProgress() {
         if (filteredData.length === 0) return;
 
@@ -330,6 +621,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (bar) bar.style.width = `100%`;
         }
 
+        if (panahKiri) panahKiri.disabled = currentScroll <= 2;
+        if (panahKanan) panahKanan.disabled = maxScroll <= 2 || currentScroll >= maxScroll - 2;
+
         updateCounter(indexTerlihat, filteredData.length);
     }
 
@@ -339,6 +633,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     strip.addEventListener("scroll", updateProgress);
+    window.addEventListener("resize", updateProgress);
+
+    // Deskripsi dan sumber referensi di modal detail
+    function htmlDeskripsi(gunung) {
+        const d = deskripsiGunung[gunung.id];
+        if (!d) {
+            return `<p class="deskripsi-menunggu">Cerita dan fakta gunung ini belum ditambahkan karena sumber terpercayanya masih dalam proses verifikasi.</p>`;
+        }
+        const bagian = d.bagian.map(b => `
+            <h3>${b.judul}</h3>
+            ${b.isi.map(p => `<p>${p}</p>`).join("")}`).join("");
+        const fakta = d.fakta
+            ? `<aside class="fakta"><h3>Tahukah kamu?</h3><p>${d.fakta}</p></aside>`
+            : "";
+        const catatan = d.catatan ? `<p class="deskripsi-catatan">${d.catatan}</p>` : "";
+        return `<div class="deskripsi">
+            <p class="deskripsi-pembuka">${d.pembuka}</p>
+            ${bagian}
+            ${fakta}
+            ${catatan}
+        </div>`;
+    }
+
+    function htmlSumber(gunung) {
+        const d = deskripsiGunung[gunung.id];
+        if (!d || !d.sumber || !d.sumber.length) return "";
+        const daftar = d.sumber
+            .map(s => `<li><a href="${s.url}" target="_blank" rel="noopener">${s.judul}</a></li>`)
+            .join("");
+        return `<section class="sumber" aria-label="Sumber referensi">
+            <h3>Sumber Referensi</h3>
+            <ol>${daftar}</ol>
+        </section>`;
+    }
 
     // Modal Detail Gunung
     function bukaModal(gunung) {
@@ -346,7 +674,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const k = koordinatGunung[gunung.id];
         const kelas = kelasKesulitan(gunung.kesulitan);
-        const ditandai = bookmarkedIds.includes(gunung.id);
+        const aktif = favoritIds.includes(gunung.id);
         gunungModalId = gunung.id;
         fokusSebelumModal = document.activeElement;
 
@@ -365,13 +693,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 <h2 id="judulModal">${gunung.nama}</h2>
                 <div class="baris"><b>Ketinggian</b><span>${formatMdpl(gunung.mdpl)} mdpl</span></div>
                 <div class="baris"><b>Lokasi</b><span>${gunung.lokasi}</span></div>
-                <div class="baris"><b>Tingkat Kesulitan</b><span>${kelas}</span></div>
+                <div class="baris"><b>Tingkat Kesulitan</b><span><i class="chip ${kelas}">${kelas}</i></span></div>
                 <p>${KETERANGAN_KESULITAN[kelas] || ""}</p>
+                ${htmlDeskripsi(gunung)}
                 <div class="modal-aksi">
                     ${aksiLokasi}
-                    <button class="modal-sekunder" id="modalBookmark" type="button">${ditandai ? "Hapus dari bookmark" : "Simpan ke bookmark"}</button>
+                    <button class="modal-sekunder modal-fav ${aktif ? "aktif" : ""}" id="modalFavorit" type="button" aria-pressed="${aktif}">${IKON_HATI}<span class="label-fav">${aktif ? "Hapus dari favorit" : "Simpan ke favorit"}</span></button>
                 </div>
                 <p class="modal-catatan">${catatanLokasi}</p>
+                ${htmlSumber(gunung)}
             </div>
         `;
 
@@ -381,7 +711,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.classList.add("modal-terbuka");
 
         document.getElementById("tutupModal").addEventListener("click", tutupModal);
-        document.getElementById("modalBookmark").addEventListener("click", () => toggleBookmark(gunung.id));
+        document.getElementById("modalFavorit").addEventListener("click", () => toggleFavorit(gunung.id));
         const tombolPeta = document.getElementById("modalPeta");
         if (tombolPeta) tombolPeta.addEventListener("click", () => lihatDiPeta(gunung.id));
         document.getElementById("tutupModal").focus();
@@ -423,9 +753,72 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === "Escape" && overlay && overlay.classList.contains("buka")) tutupModal();
     });
 
-    // ---------- Beranda: jumlah gunung ----------
+    // ---------- Beranda: jumlah gunung + ringkasan angka ----------
     const jumlahGunung = document.getElementById("jumlahGunung");
     if (jumlahGunung) jumlahGunung.textContent = dataGunung.length;
+
+    function animasiAngka(el, akhir, durasi = 1400) {
+        if (!el) return;
+        if (KURANGI_GERAK) {
+            el.textContent = formatMdpl(akhir);
+            return;
+        }
+        const mulai = performance.now() + 700; // beri waktu teks hero muncul lebih dulu
+        function langkah(sekarang) {
+            const t = Math.min(Math.max((sekarang - mulai) / durasi, 0), 1);
+            const halus = 1 - Math.pow(1 - t, 3);
+            el.textContent = formatMdpl(Math.round(akhir * halus));
+            if (t < 1) requestAnimationFrame(langkah);
+        }
+        requestAnimationFrame(langkah);
+    }
+
+    function inisialisasiStatHero() {
+        const tertinggi = dataGunung.reduce((a, b) => (b.mdpl > a.mdpl ? b : a));
+        const nama = document.getElementById("statNama");
+        if (nama) nama.textContent = tertinggi.nama;
+        animasiAngka(document.getElementById("statJumlah"), dataGunung.length, 1000);
+        animasiAngka(document.getElementById("statTinggi"), tertinggi.mdpl, 1600);
+    }
+
+    // Foto hero bergeser sedikit lebih lambat dari halaman saat digulir (memberi kesan kedalaman)
+    function inisialisasiParalaks() {
+        if (!hero || KURANGI_GERAK) return;
+        let menunggu = false;
+
+        function perbarui() {
+            menunggu = false;
+            const y = window.scrollY;
+            if (y > hero.offsetHeight) return;
+            hero.style.setProperty("--geser", (y * 0.12).toFixed(1));
+        }
+
+        window.addEventListener("scroll", () => {
+            if (!menunggu) {
+                menunggu = true;
+                requestAnimationFrame(perbarui);
+            }
+        }, { passive: true });
+    }
+
+    // ---------- Muncul saat digulir ----------
+    function inisialisasiReveal() {
+        const target = document.querySelectorAll("[data-reveal]");
+        if (!("IntersectionObserver" in window) || KURANGI_GERAK) {
+            target.forEach(el => el.classList.add("muncul"));
+            return;
+        }
+
+        const pengamat = new IntersectionObserver((daftar, io) => {
+            daftar.forEach(entri => {
+                if (!entri.isIntersecting) return;
+                entri.target.classList.add("muncul");
+                io.unobserve(entri.target);
+            });
+        }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+
+        target.forEach(el => pengamat.observe(el));
+    }
 
     // ---------- Navbar: muncul setelah hero terlewati + penanda bagian aktif ----------
     function inisialisasiNavbar() {
@@ -460,11 +853,11 @@ document.addEventListener("DOMContentLoaded", () => {
         bagian.forEach(b => pengamat.observe(b));
     }
 
-    // Menu Bookmark: buka Destinasi dengan filter Bookmark
-    const menuBookmark = document.getElementById("menuBookmark");
-    if (menuBookmark) {
-        menuBookmark.addEventListener("click", () => {
-            const pil = [...filterButtons].find(b => b.textContent.trim() === "Bookmark");
+    // Menu Favorit: buka Destinasi dengan filter Favorit
+    const menuFavorit = document.getElementById("menuFavorit");
+    if (menuFavorit) {
+        menuFavorit.addEventListener("click", () => {
+            const pil = [...filterButtons].find(b => b.dataset.kategori === "Favorit");
             inputCari.value = "";
             if (pil) pil.click();
         });
@@ -483,8 +876,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const item = document.createElement("button");
             item.type = "button";
             item.className = `sorotan-item sorotan-${posisi[i]}`;
+            item.setAttribute("data-reveal", "");
+            item.style.setProperty("--d", `${120 + i * 110}ms`);
             item.innerHTML = `
-                <span class="sorotan-foto" style="background-image: url('${g.foto}');"></span>
+                <span class="sorotan-foto">
+                    <span class="sorotan-gambar" style="background-image: url('${g.foto}');"></span>
+                    <span class="sorotan-no">0${i + 1}</span>
+                </span>
                 <span class="sorotan-nama">${g.nama}</span>
                 <span class="sorotan-meta">${formatMdpl(g.mdpl)} mdpl</span>
                 <span class="sorotan-lokasi">${g.lokasi}</span>
@@ -496,7 +894,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ---------- Peta Lokasi (Leaflet + OpenStreetMap) ----------
     function buatIkonPeta(gunung) {
-        const ditandai = bookmarkedIds.includes(gunung.id);
+        const ditandai = favoritIds.includes(gunung.id);
         return L.divIcon({
             className: "pin-wadah",
             html: `<span class="pin ${kelasKesulitan(gunung.kesulitan)}${ditandai ? " ditandai" : ""}"></span>`,
@@ -562,7 +960,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function perbaruiIkonPeta() {
         if (!petaLeaflet) return;
         Object.keys(markerPeta).forEach(id => {
-            const g = cariGunung(parseInt(id));
+            const g = cariGunung(parseInt(id, 10));
             if (g) markerPeta[id].setIcon(buatIkonPeta(g));
         });
     }
@@ -608,10 +1006,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Inisialisasi awal
     renderCards(filteredData);
     renderSorotan();
+    inisialisasiReveal(); // setelah kartu & sorotan dibuat, sebelum bagian yang bisa gagal (peta)
+    inisialisasiStatHero();
+    inisialisasiParalaks();
     inisialisasiPeta();
     isiDaftarTanpaKoordinat();
     inisialisasiNavbar();
-    perbaruiBookmarkUI();
+    perbaruiFavoritUI();
 });
 
 // =====================================================================
