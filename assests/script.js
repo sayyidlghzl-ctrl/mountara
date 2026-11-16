@@ -1,65 +1,5 @@
-// Data 40 Gunung Jawa Barat
-const dataGunung = [
-    // id 1 diperbaiki: sebelumnya "Gunung Papandayan" dengan kesulitan " Mudah" dan mdpl 2.665 (duplikat id 4).
-    // Disesuaikan dengan kartu pertama di HTML lama: Gunung Ciremai, Mahir, 3.078 mdpl, Kuningan & Majalengka.
-    { id: 1, nama: "Gunung Ciremai", kesulitan: "Mahir", mdpl: 3078, lokasi: "Kuningan & Majalengka", foto: "./jpg/g.ciremai.jpeg" },
-    { id: 2, nama: "Gunung Gede", kesulitan: "Menengah", mdpl: 2958, lokasi: "Cianjur, Sukabumi, Bogor", foto: "./jpg/g.gede.jpeg" },
-    { id: 3, nama: "Gunung Pangrango", kesulitan: "Mahir", mdpl: 3019, lokasi: "Cianjur, Sukabumi, Bogor", foto: "./jpg/g.pangrango.jpeg" },
-    { id: 4, nama: "Gunung Papandayan", kesulitan: "Pemula", mdpl: 2665, lokasi: "Garut", foto: "./jpg/g.papandayan.jpeg" },
-    { id: 5, nama: "Gunung Cikuray", kesulitan: "Mahir", mdpl: 2821, lokasi: "Garut", foto: "./jpg/g.cikuray.jpeg" },
-    { id: 6, nama: "Gunung Guntur", kesulitan: "Menengah", mdpl: 2249, lokasi: "Garut", foto: "./jpg/g.guntur.jpeg" },
-    { id: 7, nama: "Gunung Salak", kesulitan: "Mahir", mdpl: 2211, lokasi: "Bogor & Sukabumi", foto: "./jpg/g.salak.jpeg" },
-    { id: 8, nama: "Gunung Manglayang", kesulitan: "Pemula", mdpl: 1818, lokasi: "Bandung & Sumedang", foto: "./jpg/g.manglayang.jpeg" },
-    { id: 9, nama: "Gunung Tangkuban Parahu", kesulitan: "Pemula", mdpl: 2084, lokasi: "Subang & Bandung Barat", foto: "./jpg/g.tangkuban_parahu.jpeg" },
-    { id: 10, nama: "Gunung Burangrang", kesulitan: "Menengah", mdpl: 2050, lokasi: "Bandung Barat & Purwakarta", foto: "./jpg/g.burangrang.jpeg" },
-    { id: 11, nama: "Gunung Tampomas", kesulitan: "Pemula", mdpl: 1684, lokasi: "Sumedang", foto: "./jpg/g.tampomas.jpeg" },
-    { id: 12, nama: "Gunung Rakutak", kesulitan: "Menengah", mdpl: 1921, lokasi: "Kabupaten Bandung", foto: "./jpg/g.rakutak.jpeg" },
-    { id: 13, nama: "Gunung Wayang", kesulitan: "Pemula", mdpl: 2182, lokasi: "Pangalengan, Bandung", foto: "./jpg/g.wayang.jpeg" },
-    { id: 14, nama: "Gunung Malabar", kesulitan: "Menengah", mdpl: 2343, lokasi: "Kabupaten Bandung", foto: "./jpg/Gunung_malabar.jpeg" },
-    { id: 15, nama: "Gunung Patuha", kesulitan: "Pemula", mdpl: 2434, lokasi: "Ciwidey, Bandung", foto: "./jpg/Gunung_patuha.jpeg" },
-    { id: 16, nama: "Gunung Kencana", kesulitan: "Pemula", mdpl: 1803, lokasi: "Bogor", foto: "./jpg/g.kencana.jpeg" },
-    // { id： 17, nama: "Gunung Munara", kesulitan: "Pemula", mdpl: 360, lokasi: "Rumpin, Bogor", foto: "./jpg/g.munara.jpeg" },
-    // { id: 18, nama: "Gunung Batu Lembang", kesulitan: "Pemula", mdpl： 1228, lokasi: "Lembang, Bandung Barat", foto: "./jpg/g.batu_lembang.jpeg" },
-    { id: 19, nama: "Gunung Lembu", kesulitan: "Pemula", mdpl: 792, lokasi: "Purwakarta", foto: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&auto=format&fit=crop" },
-    { id: 20, nama: "Gunung Parang", kesulitan: "Mahir", mdpl: 963, lokasi: "Purwakarta", foto: "https://images.unsplash.com/photo-1434394354979-a235cd36269d?w=600&auto=format&fit=crop" },
-    { id: 21, nama: "Gunung Bongkok", kesulitan: "Pemula", mdpl: 975, lokasi: "Purwakarta", foto: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=600&auto=format&fit=crop" },
-    { id: 22, nama: "Gunung Galunggung", kesulitan: "Pemula", mdpl: 2168, lokasi: "Tasikmalaya", foto: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop" },
-    { id: 23, nama: "Gunung Karang", kesulitan: "Menengah", mdpl: 1778, lokasi: "Majalengka", foto: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&auto=format&fit=crop" },
-    { id: 24, nama: "Gunung Puncak Manik", kesulitan: "Menengah", mdpl: 2211, lokasi: "Salak 1, Sukabumi", foto: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&auto=format&fit=crop" },
-    { id: 25, nama: "Gunung Palasari", kesulitan: "Pemula", mdpl: 1852, lokasi: "Sumedang", foto: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=600&auto=format&fit=crop" },
-    { id: 26, nama: "Gunung Artapela", kesulitan: "Pemula", mdpl: 2194, lokasi: "Pangalengan, Bandung", foto: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=600&auto=format&fit=crop" },
-    { id: 27, nama: "Gunung Sanggabuana", kesulitan: "Menengah", mdpl: 1291, lokasi: "Karawang", foto: "https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5?w=600&auto=format&fit=crop" },
-    { id: 28, nama: "Gunung Kancana Sukabumi", kesulitan: "Pemula", mdpl: 1200, lokasi: "Sukabumi", foto: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop" },
-    { id: 29, nama: "Gunung Subang", kesulitan: "Menengah", mdpl: 1204, lokasi: "Cianjur & Kuningan", foto: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&auto=format&fit=crop" },
-    { id: 30, nama: "Gunung Kendang", kesulitan: "Mahir", mdpl: 2608, lokasi: "Bandung & Garut", foto: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&auto=format&fit=crop" },
-    { id: 31, nama: "Gunung Sadakora", kesulitan: "Pemula", mdpl: 1090, lokasi: "Purwakarta", foto: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=600&auto=format&fit=crop" },
-    { id: 32, nama: "Gunung Tilu Purwakarta", kesulitan: "Menengah", mdpl: 1076, lokasi: "Purwakarta", foto: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&auto=format&fit=crop" },
-    { id: 33, nama: "Gunung Sawal", kesulitan: "Menengah", mdpl: 1764, lokasi: "Ciamis", foto: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&auto=format&fit=crop" },
-    { id: 34, nama: "Gunung Hejo", kesulitan: "Pemula", mdpl: 650, lokasi: "Purwakarta", foto: "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?w=600&auto=format&fit=crop" },
-    { id: 35, nama: "Gunung Kancana Bogor", kesulitan: "Pemula", mdpl: 1802, lokasi: "Cisarua, Bogor", foto: "https://images.unsplash.com/photo-1511497584788-876761465586?w=600&auto=format&fit=crop" },
-    { id: 36, nama: "Gunung Sunda", kesulitan: "Pemula", mdpl: 700, lokasi: "Sukabumi", foto: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&auto=format&fit=crop" },
-    { id: 37, nama: "Gunung Karacak", kesulitan: "Pemula", mdpl: 1838, lokasi: "Garut", foto: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&auto=format&fit=crop" },
-    { id: 38, nama: "Gunung Srimahi", kesulitan: "Pemula", mdpl: 1250, lokasi: "Ciwidey, Bandung", foto: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=600&auto=format&fit=crop" },
-    { id: 39, nama: "Gunung Sangar", kesulitan: "Menengah", mdpl: 1835, lokasi: "Arjasari, Bandung", foto: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&auto=format&fit=crop" },
-    { id: 40, nama: "Gunung Halimun", kesulitan: "Mahir", mdpl: 1929, lokasi: "Sukabumi & Bogor", foto: "https://images.unsplash.com/photo-1434394354979-a235cd36269d?w=600&auto=format&fit=crop" }
-];
-
-// Koordinat gunung yang sudah dapat diverifikasi dari sumber publik (id gunung -> koordinat).
-// Hanya gunung di daftar ini yang dipasangi marker di peta. Gunung lain memakai tautan pencarian Google Maps.
-// Untuk menambah marker: pastikan koordinatnya dari sumber tepercaya, lalu tambahkan satu baris di sini.
-// Catatan: koordinat dari Wikipedia/BIRA-IASB berpresisi sekitar 1 menit busur (kurang lebih 2 km), yaitu titik pusat/puncak gunung.
-const koordinatGunung = {
-    1: { lat: -6.89, lng: 108.40, sumber: "BIRA-IASB" },         // Ciremai
-    2: { lat: -6.78, lng: 106.98, sumber: "Wikipedia" },         // Gede
-    3: { lat: -6.7701, lng: 106.9650, sumber: "Gunung Bagging" }, // Pangrango
-    4: { lat: -7.3167, lng: 107.7333, sumber: "Wikipedia" },     // Papandayan (7°19'S 107°44'E)
-    5: { lat: -7.3226, lng: 107.8599, sumber: "Gunung Bagging" }, // Cikuray
-    6: { lat: -7.14, lng: 107.84, sumber: "BIRA-IASB" },         // Guntur
-    7: { lat: -6.72, lng: 106.73, sumber: "Wikipedia" },         // Salak
-    9: { lat: -6.7532, lng: 107.6059, sumber: "Gunung Bagging" }, // Tangkuban Parahu
-    15: { lat: -7.1624, lng: 107.3992, sumber: "Gunung Bagging" }, // Patuha
-    22: { lat: -7.25, lng: 108.05, sumber: "Wikipedia" }          // Galunggung (7°15'S 108°03'E)
-};
+let dataGunung = [];
+let koordinatGunung = {};
 
 const KETERANGAN_KESULITAN = {
     Pemula: "Kategori Pemula: jalurnya relatif ringan dan cocok untuk pendaki yang baru memulai. Tetap bawa perlengkapan dasar dan cek cuaca sebelum berangkat.",
@@ -253,7 +193,41 @@ const deskripsiGunung = {
     }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const respons = await fetch("./api/gunung.php", {
+            headers: { Accept: "application/json" }
+        });
+        if (!respons.ok) throw new Error(`HTTP ${respons.status}`);
+
+        const hasil = await respons.json();
+        if (!Array.isArray(hasil)) throw new Error("Format data API tidak sesuai.");
+
+        dataGunung = hasil.map(g => ({
+            ...g,
+            id: Number(g.id),
+            mdpl: Number(g.mdpl),
+            latitude: g.latitude === null ? null : Number(g.latitude),
+            longitude: g.longitude === null ? null : Number(g.longitude)
+        }));
+        koordinatGunung = Object.fromEntries(
+            dataGunung
+                .filter(g => Number.isFinite(g.latitude) && Number.isFinite(g.longitude))
+                .map(g => [g.id, {
+                    lat: g.latitude,
+                    lng: g.longitude,
+                    sumber: g.koordinat_sumber || "Database"
+                }])
+        );
+
+        if (dataGunung.length === 0) throw new Error("Tabel gunung belum berisi data.");
+    } catch (error) {
+        console.error("Gagal memuat daftar gunung dari API.", error);
+        const strip = document.getElementById("strip");
+        if (strip) strip.textContent = "Data gunung belum bisa dimuat. Periksa konfigurasi database dan API.";
+        return;
+    }
+
     const strip = document.getElementById("strip");
     const filterButtons = document.querySelectorAll("#filter .pil");
     const inputCari = document.getElementById("cari");
@@ -1014,4 +988,3 @@ document.addEventListener("DOMContentLoaded", () => {
     inisialisasiNavbar();
     perbaruiFavoritUI();
 });
-
